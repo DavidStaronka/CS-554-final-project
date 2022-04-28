@@ -78,3 +78,10 @@ nav {
   width: 50%;
   margin: 20px auto 20px;
 }
+
+.col {
+  border: solid;
+}
+h6{
+  text-decoration: underline;
+}
