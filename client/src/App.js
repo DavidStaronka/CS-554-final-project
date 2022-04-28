@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import Home from "../src/components/Home";
 import Profile from "../src/components/Profile";
 import CharacterList from "../src/components/CharacterList";
+import CharacterSheet from "./components/CharacterSheet/";
 import SessionList from "../src/components/SessionList";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/characters" element={<CharacterList />} />
+            <Route exact path="/character/:id" element={<CharacterSheet />} />
             <Route exact path="/sessions" element={<SessionList />} />
           </Routes>
         </div>
