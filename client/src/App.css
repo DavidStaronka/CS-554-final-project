@@ -81,6 +81,7 @@ nav {
 
 .col {
   border: solid;
+  padding: 10px;
 }
 h6{
   text-decoration: underline;
