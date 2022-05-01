@@ -1,4 +1,5 @@
 import { Col, Table, FormControl, Button } from "react-bootstrap";
+import { v4 as uuidv4 } from "uuid";
 
 function Spells(props) {
   const [char, setChar] = props.char;
@@ -39,7 +40,7 @@ function Spells(props) {
         setSaved(false);
       };
       return (
-        <tr>
+        <tr key={uuidv4()}>
           <td>
             <FormControl
               type="text"
@@ -77,9 +78,47 @@ function Spells(props) {
       setChar(updatedChar);
       setSaved(false);
     };
+    const handleSpellSlotsChange = (attr, level, val) => {
+      const updatedChar = { ...char };
+
+      updatedChar.spellSlots[attr][level] = val;
+
+      setChar(updatedChar);
+      setSaved(false);
+    };
+    const formatSpellSlots = () => {
+      if (level == 0) {
+        return <></>;
+      }
+      return (
+        <form className="d-flex justify-content-center">
+          <strong>Current spell slots:</strong>
+          <FormControl
+            type="number"
+            value={char.spellSlots.current[level - 1]}
+            onChange={(e) =>
+              handleSpellSlotsChange("current", level - 1, e.target.value)
+            }
+            className="w-25 mx-auto"
+          />
+          <br />
+          &ensp;
+          <strong>Max spell slots:</strong>
+          <FormControl
+            type="number"
+            value={char.spellSlots.max[level - 1]}
+            onChange={(e) =>
+              handleSpellSlotsChange("max", level - 1, e.target.value)
+            }
+            className="w-25 mx-auto"
+          />
+        </form>
+      );
+    };
     return (
-      <div className="border border-secondary border-2 m-1">
-        <h6>{spellLevel[level]}</h6>
+      <div className="border border-warning border-3 m-1" key={uuidv4()}>
+        <h5>{spellLevel[level]}</h5>
+        {formatSpellSlots()}
         <Table bordered>
           <thead>
             <tr>
