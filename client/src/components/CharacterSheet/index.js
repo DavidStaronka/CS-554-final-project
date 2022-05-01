@@ -1,5 +1,5 @@
 import { Container, Row, FormControl, Button } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import Stats from "./Stats";
 import Skills from "./Skills";
@@ -7,6 +7,9 @@ import Inventory from "./Inventory";
 import Titles from "./Titles";
 import Spells from "./Spells";
 import Proficiencies from "./Proficiencies";
+import { useParams } from "react-router-dom";
+
+import io from "socket.io-client";
 
 const axios = require("axios");
 
@@ -16,9 +19,20 @@ function CharacterSheet() {
   const [char, setChar] = useState({});
   const [saved, setSaved] = useState(true);
 
+  const { id } = useParams();
+  const socketRef = useRef();
+
+  //connect socket.io
+  useEffect(() => {
+    socketRef.current = io("/");
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
+
   // get char from db
   useEffect(() => {
-    console.log("initial render useEffect fired");
+    console.log("id useEffect fired");
     try {
       setChar({
         id: "1",
@@ -93,7 +107,17 @@ function CharacterSheet() {
       setError(e);
     }
     setLoading(false);
-  }, []);
+  }, [id]);
+
+  // Lets DM change player health
+  useEffect(() => {
+    socketRef.current.on("healthChange", (newCurrentHealth) => {
+      const updatedChar = { ...char };
+      updatedChar.healthPoints.current = newCurrentHealth;
+      setChar(updatedChar);
+      setSaved(false);
+    });
+  }, [char]);
 
   const handleCharChange = (stat, val) => {
     const updatedChar = { ...char };
