@@ -1,8 +1,8 @@
-import { FormControl, Button } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 
 function Titles(props) {
   const [char, setChar] = props.char;
-  const [saved, setSaved] = props.saved;
+  const setSaved = props.saved[1];
 
   const handleCharChange = (stat, val) => {
     const updatedChar = { ...char };

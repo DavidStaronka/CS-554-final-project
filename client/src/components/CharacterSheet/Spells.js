@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 function Spells(props) {
   const [char, setChar] = props.char;
-  const [saved, setSaved] = props.saved;
+  const setSaved = props.saved[1];
 
   const formatSpellLevels = (level) => {
     const spellLevel = {
@@ -87,7 +87,7 @@ function Spells(props) {
       setSaved(false);
     };
     const formatSpellSlots = () => {
-      if (level == 0) {
+      if (level === 0) {
         return <></>;
       }
       return (
@@ -131,6 +131,7 @@ function Spells(props) {
               if (spell.level === level) {
                 return formatSpell(spell);
               }
+              return <tr key={uuidv4()}></tr>;
             })}
           </tbody>
         </Table>

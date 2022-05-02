@@ -2,7 +2,7 @@ import { Row, Col, Table, Form, FormControl } from "react-bootstrap";
 
 function Proficiencies(props) {
   const [char, setChar] = props.char;
-  const [saved, setSaved] = props.saved;
+  const setSaved = props.saved[1];
 
   const handleProfChange = (stat, val) => {
     const updatedChar = { ...char };
