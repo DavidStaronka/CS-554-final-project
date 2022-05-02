@@ -7,9 +7,12 @@ import Profile from "../src/components/Profile";
 import CharacterList from "../src/components/CharacterList";
 import CharacterSheet from "./components/CharacterSheet/";
 import SessionList from "../src/components/SessionList";
+import { AuthProvider } from './firebase/Auth';
+
 
 function App() {
   return (
+    <AuthProvider>
     <BrowserRouter>
       <div className="App">
         <header className="App-header">
@@ -40,6 +43,7 @@ function App() {
         </div>
       </div>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
