@@ -2,7 +2,7 @@ import { Col, Row, FormControl } from "react-bootstrap";
 
 function Stats(props) {
   const [char, setChar] = props.char;
-  const [saved, setSaved] = props.saved;
+  const setSaved = props.saved[1];
 
   const handleStatChange = (stat, val) => {
     const updatedChar = { ...char };

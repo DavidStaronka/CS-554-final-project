@@ -1,5 +1,8 @@
 import { Container, Row, FormControl, Button } from "react-bootstrap";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, createRef } from "react";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import io from "socket.io-client";
 
 import Stats from "./Stats";
 import Skills from "./Skills";
@@ -8,8 +11,6 @@ import Titles from "./Titles";
 import Spells from "./Spells";
 import Proficiencies from "./Proficiencies";
 import { useParams } from "react-router-dom";
-
-import io from "socket.io-client";
 
 const axios = require("axios");
 
@@ -21,6 +22,7 @@ function CharacterSheet() {
 
   const { id } = useParams();
   const socketRef = useRef();
+  const ref = createRef();
 
   //connect socket.io
   useEffect(() => {
@@ -119,6 +121,19 @@ function CharacterSheet() {
     });
   }, [char]);
 
+  function printDocument() {
+    const input = document.getElementById("divToPrint");
+    window.scrollTo(0, 0);
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      var width = pdf.internal.pageSize.getWidth();
+      var height = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, "JPEG", 0, 0, width, height);
+      pdf.save("characterSheet.pdf");
+    });
+  }
+
   const handleCharChange = (stat, val) => {
     const updatedChar = { ...char };
     updatedChar[stat] = val;
@@ -139,7 +154,7 @@ function CharacterSheet() {
       );
     }
     return (
-      <Button className="btn btn-lg btn-danger" onClick={handleSave}>
+      <Button className="btn btn-lg btn-danger " onClick={handleSave}>
         Save
       </Button>
     );
@@ -170,10 +185,13 @@ function CharacterSheet() {
     return <h2>{error}</h2>;
   }
   return (
-    <div>
+    <div id="divToPrint">
       <div className="d-block p-3 ">
         {longRestButton()}
         {saveButton()}
+        <Button onClick={printDocument} className="btn btn-lg btn-primary mx-5">
+          Print
+        </Button>
       </div>
       <Container className="border border-3 border-secondary mx-auto p-3">
         <h4>

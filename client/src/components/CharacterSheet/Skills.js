@@ -2,7 +2,7 @@ import { Col, Table, Form } from "react-bootstrap";
 
 function Skills(props) {
   const [char, setChar] = props.char;
-  const [saved, setSaved] = props.saved;
+  const setSaved = props.saved[1];
 
   const formatSkill = (name, stat) => {
     const dict = {

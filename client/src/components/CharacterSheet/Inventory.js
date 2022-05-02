@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 function Inventory(props) {
   const [char, setChar] = props.char;
-  const [saved, setSaved] = props.saved;
+  const setSaved = props.saved[1];
 
   const handleWeaponChange = () => {};
   const handleCharChange = (stat, val) => {
