@@ -8,6 +8,7 @@ import CharacterList from "../src/components/CharacterList";
 import CharacterSheet from "./components/CharacterSheet/";
 import SessionList from "../src/components/SessionList";
 import { AuthProvider } from './firebase/Auth';
+import Login from "../src/components/Login"
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <div className="App-body">
           <Routes>
             <Route exact path="/" element={<Home />} />
+            <Route exact path="/login" element={<Login/>} />
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/characters" element={<CharacterList />} />
             <Route exact path="/character/:id" element={<CharacterSheet />} />

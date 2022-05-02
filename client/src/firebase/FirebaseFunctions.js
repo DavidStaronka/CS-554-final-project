@@ -8,9 +8,18 @@ async function callSignOut() {
   await firebase.auth().signOut();
 }
 
+async function callSignInWithEmailAndPassword(email, password) {
+  await firebase.auth().signInWithEmailAndPassword(email, password);
+}
+
+async function callPasswordReset(email) {
+  await firebase.auth().sendPasswordResetEmail(email);
+}
 
 
 export {
   callCreateUserWithEmailAndPassword,
-  callSignOut
+  callSignOut,
+  callSignInWithEmailAndPassword,
+  callPasswordReset
 };
