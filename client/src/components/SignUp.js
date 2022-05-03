@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { callCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { callSignOut } from '../firebase/FirebaseFunctions';
@@ -13,9 +13,25 @@ const SignOutButton = () => {
     );
   };
 
+const addtoMongo = async(firebase, email) => {
+  try {
+    let response = await axios.post(`http://localhost:5000/users/create/` + firebase + '/' + email)
+    console.log(response)
+  } catch (e){
+    alert(e)
+  }
+}
+
 function SignUp() {
   const { currentUser } = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
+
+  useEffect(() => {
+    if (currentUser){
+      addtoMongo(currentUser.uid, currentUser.email)
+    }
+  }, [currentUser])
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     const { email, passwordOne, passwordTwo } = e.target.elements;
@@ -25,19 +41,20 @@ function SignUp() {
     }
 
     try {
-      await callCreateUserWithEmailAndPassword(
+      let seethis = await callCreateUserWithEmailAndPassword(
         email.value,
         passwordOne.value,
       );
-      let response = await axios.post(`http://localhost:5000/users/create/` + email.value)
-      console.log(response)
+      console.log(seethis)
+      // addtoMongo()
     } catch (error) {
       alert(error);
     }
   };
 
   if (currentUser) {
-      console.log(currentUser)
+      // console.log(currentUser)
+      
     return ( 
         <div>
             You are signed in as {currentUser.email}

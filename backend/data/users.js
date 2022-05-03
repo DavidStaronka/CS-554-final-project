@@ -2,14 +2,15 @@ const collections = require('../config/mongoCollections');
 const users = collections.users;
 
 module.exports = {
-    async create(userEmail) {
+    async create(firebaseuid, userEmail) {
         if(!userEmail || typeof userEmail !== 'string') throw 'Must provice a valid userEmail';
-
-        if(await this.userExists(userEmail)) throw 'Email already in use'
+        if(!firebaseuid || typeof firebaseuid !== 'string') throw 'Must provice a valid firebaseuid';
+        if(await this.userExists(firebaseuid)) throw 'user already in use'
 
         const userCollection = await users();
         let newUser = {
-            userEmail: userEmail
+            userEmail: userEmail,
+            firebaseuid: firebaseuid
         }
 
         const insertInfo = await userCollection.insertOne(newUser);
