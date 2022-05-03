@@ -3,6 +3,7 @@ import { Col, Row, FormControl } from "react-bootstrap";
 function Stats(props) {
   const [char, setChar] = props.char;
   const setSaved = props.saved[1];
+  const socketRef = props.socketRef;
 
   const handleStatChange = (stat, val) => {
     const updatedChar = { ...char };
@@ -21,6 +22,9 @@ function Stats(props) {
   const handleHitPointsChange = (stat, val) => {
     const updatedChar = { ...char };
     updatedChar.hitPoints[stat] = val;
+    if (stat === "current") {
+      socketRef.current.emit("message", val);
+    }
     setChar(updatedChar);
     setSaved(false);
   };
