@@ -10,7 +10,9 @@ module.exports = {
         const userCollection = await users();
         let newUser = {
             userEmail: userEmail,
-            firebaseuid: firebaseuid
+            firebaseuid: firebaseuid,
+            sessions: [],
+            characters: [],
         }
 
         const insertInfo = await userCollection.insertOne(newUser);

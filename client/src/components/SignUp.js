@@ -6,12 +6,12 @@ import { AuthContext } from '../firebase/Auth';
 import axios from 'axios';
 
 const SignOutButton = () => {
-    return (
-      <button type="button" onClick={callSignOut}>
-        Sign Out
-      </button>
-    );
-  };
+  return (
+    <button type="button" onClick={callSignOut}>
+      Sign Out
+    </button>
+  );
+};
 
 const addtoMongo = async(firebase, email) => {
   try {
@@ -36,7 +36,7 @@ function SignUp() {
     e.preventDefault();
     const { email, passwordOne, passwordTwo } = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
-      setPwMatch('Passwords do not match');
+      setPwMatch("Passwords do not match");
       return false;
     }
 
@@ -75,7 +75,6 @@ function SignUp() {
       {pwMatch && <h4 className="error">{pwMatch}</h4>}
       <form onSubmit={handleSignUp}>
         <div className="form-group">
-            
           <label>
             Email:
             <input
@@ -120,7 +119,7 @@ function SignUp() {
         </button>
       </form>
       <br></br>
-      <Link to="/login" > Already have an account?</Link>
+      <Link to="/login"> Already have an account?</Link>
       <br />
     </div>
   );

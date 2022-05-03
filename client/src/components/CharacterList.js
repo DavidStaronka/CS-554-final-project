@@ -1,15 +1,26 @@
-import { AuthContext } from '../firebase/Auth';
-import React, { useContext } from 'react';
+import { AuthContext } from "../firebase/Auth";
+import React, { useContext } from "react";
+import CharacterForm from "./CharacterForm";
 const axios = require("axios");
 
 function CharacterList() {
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser)
-  if (!currentUser){
-    return <p> Please login to view your Characters</p>
+  console.log(currentUser.uid);
+  let page;
+
+  if (!currentUser) {
+    page = <p> Please login to view your Characters</p>;
   } else {
-    return <p>Characters Page</p>;
+
+    page = (
+      <div>
+        <p>Characters Page</p>
+        <CharacterForm/>
+      </div>
+    );
   }
+
+  return page;
 }
 
 export default CharacterList;
