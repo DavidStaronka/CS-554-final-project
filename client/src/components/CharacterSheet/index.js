@@ -1,5 +1,5 @@
 import { Container, Row, FormControl, Button } from "react-bootstrap";
-import { useState, useRef, useEffect, createRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import io from "socket.io-client";
@@ -22,7 +22,6 @@ function CharacterSheet() {
 
   const { id } = useParams();
   const socketRef = useRef();
-  const ref = createRef();
 
   //connect socket.io
   useEffect(() => {
@@ -204,7 +203,11 @@ function CharacterSheet() {
           />
         </h4>
         <Titles char={[char, setChar]} saved={[saved, setSaved]} />
-        <Stats char={[char, setChar]} saved={[saved, setSaved]} />
+        <Stats
+          char={[char, setChar]}
+          saved={[saved, setSaved]}
+          socketRef={socketRef}
+        />
         <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
         <Inventory char={[char, setChar]} saved={[saved, setSaved]} />
         <Row className="p-2">
