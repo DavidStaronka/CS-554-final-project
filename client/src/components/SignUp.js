@@ -13,7 +13,7 @@ const SignOutButton = () => {
   );
 };
 
-const addtoMongo = async(firebase, email) => {
+const addtoMongo = async (firebase, email) => {
   try {
     let response = await axios.post(`http://localhost:5000/users/create/` + firebase + "/" + email);
     console.log(response);
@@ -66,7 +66,7 @@ function SignUp() {
   };
 
   if (currentUser) {
-    // console.log(currentUser)
+    console.log(currentUser.uid);
 
     return (
       <div>
