@@ -5,14 +5,6 @@ import { callSignOut } from "../firebase/FirebaseFunctions";
 import { AuthContext } from "../firebase/Auth";
 import axios from "axios";
 
-const SignOutButton = () => {
-  return (
-    <button type="button" onClick={callSignOut}>
-      Sign Out
-    </button>
-  );
-};
-
 const addtoMongo = async (firebase, email) => {
   try {
     let response = await axios.post(`http://localhost:5000/users/create/` + firebase + "/" + email);
