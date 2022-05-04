@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const collections = require("../config/mongoCollections");
 const characters = collections.characters;
 
@@ -63,27 +64,50 @@ module.exports = {
     return insertInfo.insertedId;
   },
 
-  async getAllUsers() {
-    const userCollection = await characters();
-    const arr = await userCollection.find({}).toArray();
-    return arr;
+  async updateCharacter(body) {
+    // TODO add input checks
+    // if (!body.name || typeof body.name !== "string") throw "Must provice a valid name";
+    // if (!body.session || typeof body.session !== "string")
+    //   throw "Must provice a valid session name";
+    // if (!body.userId || typeof body.userId !== "string") throw "Invalid userId";
+
+    const characterCollection = await characters();
+    body._id = ObjectId(body._id);
+    let newCharacter = body;
+    console.log("UPDATE CHARACTER");
+    console.log(body);
+
+    const insertInfo = await characterCollection.replaceOne({ _id: body._id }, body);
+    // if (insertInfo.insertedCount === 0) throw `Could not update character`;
+    console.log(insertInfo);
+    return insertInfo.insertedId;
   },
 
-  async userExists(userID) {
-    if (!userID || typeof userID !== "string") throw "Must provide a valid userID";
-
-    const userCollection = await characters();
-    const user = await userCollection.findOne({ userID: userID });
-    if (user === null) return false;
-    return true;
-  },
-
-  async getUser(userID) {
+  async getCharacters(userID) {
     if (!userID || typeof userID !== "string") throw "Must provice a valid userID";
 
-    const userCollection = await characters();
-    const user = await userCollection.findOne({ userID: userID });
-    if (user === null) return null;
-    return user;
+    const characterCollection = await characters();
+    const allCharacters = await characterCollection.find({ profileId: userID }).toArray();
+    if (allCharacters === null) return null;
+    //console.log(allCharacters);
+    return allCharacters;
+  },
+
+  async getCharacter(characterId) {
+    console.log(`GET CHAR ID ${characterId}`);
+    if (!characterId || typeof characterId !== "string") throw "Must provice a valid characterId";
+    const characterCollection = await characters();
+    const character = await characterCollection.findOne({ _id: ObjectId(characterId) });
+    if (character === null) return null;
+    return character;
+  },
+
+  async characterExists(characterId) {
+    if (!characterId || typeof characterId !== "string") throw "Must provide a valid characterId";
+
+    const characterCollection = await characters();
+    const character = await characterCollection.findOne({ _id: characterId });
+    if (character === null) return false;
+    return true;
   },
 };
