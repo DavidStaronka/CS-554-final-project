@@ -59,7 +59,7 @@ module.exports = {
 
     const insertInfo = await characterCollection.insertOne(newCharacter);
     if (insertInfo.insertedCount === 0) throw `Could not add character`;
-    print(insertInfo.insertedCount);
+    console.log(insertInfo);
     return insertInfo.insertedId;
   },
 

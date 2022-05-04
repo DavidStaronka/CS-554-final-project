@@ -9,6 +9,7 @@ router.post("/", async (req, res) => {
     const newUser = await characterData.createCharacter(req.body);
     res.status(200).json({});
   } catch (e) {
+    console.log(e);
     res.sendStatus(500);
   }
 });
