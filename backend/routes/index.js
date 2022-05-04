@@ -1,9 +1,11 @@
-const userRoutes = require('./users');
+const userRoutes = require("./users");
+const characterRoutes = require("./characters");
 
 const constructorMethod = (app) => {
-  app.use('/users', userRoutes);
+  app.use("/users", userRoutes);
+  app.use("/character", characterRoutes);
 
-  app.use('*', (req, res) => {
+  app.use("*", (req, res) => {
     res.sendStatus(404);
   });
 };

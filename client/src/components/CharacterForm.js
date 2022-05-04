@@ -19,6 +19,7 @@ function CharacterForm() {
         session: session.value,
         userId: currentUser.uid,
       });
+      console.log(response);
       setCollapsed(true);
     } catch (error) {
       console.log(error);
