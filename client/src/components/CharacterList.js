@@ -1,22 +1,43 @@
 import { AuthContext } from "../firebase/Auth";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CharacterForm from "./CharacterForm";
+import { Link } from "react-router-dom";
 const axios = require("axios");
 
 function CharacterList() {
   const { currentUser } = useContext(AuthContext);
+  const [data, setData] = useState(undefined);
+        
+
+  const getData = async () => {
+    let response = await axios.get(`http://localhost:5000/character/characters/${currentUser.uid}`);
+    setData(response.data);
+    console.log(response.data);
+  };
+  useEffect(() => {
+    if (currentUser) {
+      getData();
+    }
+  }, [currentUser]);
   if (currentUser) {
-    console.log(currentUser.uid);
   }
   let page;
 
+
+
   if (!currentUser) {
     page = <p> Please login to view your Characters</p>;
-  } else {
+  } else if (data) {
     page = (
       <div>
-        <p>Characters Page</p>
         <CharacterForm />
+        <br/>
+        {data.map((character) => (
+          <div>
+          <Link to={`/character/${character._id}`} title={character.name}>{character.name}</Link>
+          <br/>
+          </div>
+        ))}
       </div>
     );
   }
