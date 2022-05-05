@@ -3,15 +3,28 @@ import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 
 const axios = require("axios");
-function CharacterForm() {
+function CharacterForm(props) {
   const { currentUser } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(true);
+  const setUpToDate = props.update;
+
   let body;
 
   const handleCreateCharacter = async (e) => {
     e.preventDefault();
 
     const { name, session } = e.target.elements;
+
+    if (!name.value.trim()) {
+      alert("Character Name must be provided");
+      return;
+    }
+    if (!session.value.trim()) {
+      alert("Session Name must be provided");
+      return;
+    }
+
+    //TODO CHECK SESSION EXISTS
     console.log(name.value, session.value);
     try {
       let response = await axios.post(`http://localhost:5000/character`, {
@@ -20,6 +33,7 @@ function CharacterForm() {
         userId: currentUser.uid,
       });
       console.log(response);
+      setUpToDate(false);
       setCollapsed(true);
     } catch (error) {
       console.log(error);

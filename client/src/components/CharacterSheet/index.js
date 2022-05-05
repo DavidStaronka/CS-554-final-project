@@ -201,15 +201,10 @@ function CharacterSheet() {
         </Button>
       </div>
       <Container className="border border-3 border-secondary mx-auto p-3">
-        <h4>
-          Session ID:
-          <FormControl
-            type="text"
-            value={char.sessionId}
-            onChange={(e) => handleCharChange("sessionId", e.target.value)}
-            className="w-50 mx-auto"
-          />
-        </h4>
+        <h4>Session ID:</h4>
+        <h3 className="w-50 mx-auto" type="text">
+          {char.sessionId}
+        </h3>
         <Titles char={[char, setChar]} saved={[saved, setSaved]} />
         <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} />
         <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
