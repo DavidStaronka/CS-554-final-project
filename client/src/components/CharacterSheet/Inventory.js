@@ -1,14 +1,46 @@
-import { Row, Col, FormControl, Table } from "react-bootstrap";
+import { Row, Col, FormControl, Table, Button } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 
 function Inventory(props) {
   const [char, setChar] = props.char;
   const setSaved = props.saved[1];
 
-  const handleWeaponChange = () => {};
   const handleCharChange = (stat, val) => {
     const updatedChar = { ...char };
     updatedChar[stat] = val;
+    setChar(updatedChar);
+    setSaved(false);
+  };
+
+  const handleWeaponChange = (weapon, sub, val) => {
+    const updatedChar = { ...char };
+
+    const index = updatedChar.weapons.indexOf(weapon);
+
+    updatedChar.weapons[index][sub] = val;
+    setChar(updatedChar);
+    setSaved(false);
+  };
+
+  const handleWeaponDelete = (weapon) => {
+    const updatedChar = { ...char };
+
+    const index = updatedChar.weapons.indexOf(weapon);
+
+    updatedChar.weapons.splice(index, 1);
+
+    setChar(updatedChar);
+    setSaved(false);
+  };
+
+  const addWeapon = () => {
+    const updatedChar = { ...char };
+
+    updatedChar.weapons.push({
+      name: "name",
+      description: "description",
+      id: uuidv4(),
+    });
     setChar(updatedChar);
     setSaved(false);
   };
@@ -20,17 +52,21 @@ function Inventory(props) {
           <FormControl
             type="text"
             value={weapon.name}
-            onChange={(e) => handleWeaponChange("name", e.target.value)}
+            onChange={(e) => handleWeaponChange(weapon, "name", e.target.value)}
             className="mx-auto"
           />
         </td>
         <td>
           <FormControl
             as="textarea"
+            type="text"
             value={weapon.description}
-            onChange={(e) => handleWeaponChange("description", e.target.value)}
+            onChange={(e) => handleWeaponChange(weapon, "description", e.target.value)}
             className="mx-auto"
           />
+        </td>
+        <td>
+          <Button onClick={(e) => handleWeaponDelete(weapon)}>Delete</Button>
         </td>
       </tr>
     );
@@ -49,6 +85,13 @@ function Inventory(props) {
           </thead>
           <tbody>{char.weapons.map(mapWeapon)}</tbody>
         </Table>
+        <Button
+          onClick={(e) => {
+            addWeapon();
+          }}
+        >
+          Add Weapon
+        </Button>
       </Col>
       <Col className=" border-primary m-1">
         <h5>Inventory</h5>

@@ -7,7 +7,7 @@ const axios = require("axios");
 function CharacterList() {
   const { currentUser } = useContext(AuthContext);
   const [data, setData] = useState(undefined);
-        
+  const [upToDate, setUpToDate] = useState(false);
 
   const getData = async () => {
     let response = await axios.get(`http://localhost:5000/character/characters/${currentUser.uid}`);
@@ -15,27 +15,30 @@ function CharacterList() {
     console.log(response.data);
   };
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && !upToDate) {
       getData();
+      setUpToDate(true);
     }
-  }, [currentUser]);
+  }, [currentUser, upToDate]);
   if (currentUser) {
   }
   let page;
-
-
 
   if (!currentUser) {
     page = <p> Please login to view your Characters</p>;
   } else if (data) {
     page = (
       <div>
-        <CharacterForm />
-        <br/>
+        <br />
+        <CharacterForm update={setUpToDate} />
+        <br />
+        <br />
         {data.map((character) => (
           <div>
-          <Link to={`/character/${character._id}`} title={character.name}>{character.name}</Link>
-          <br/>
+            <Link to={`/character/${character._id}`} title={character.name}>
+              {character.name}
+            </Link>
+            <br />
           </div>
         ))}
       </div>

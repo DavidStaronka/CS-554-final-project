@@ -42,8 +42,6 @@ function Titles(props) {
   return (
     <div>
       <div className="d-flex justify-content-between">
-        <img alt={char.name} src={char.img} height="150" width="150" />
-
         <h3>
           Race:
           <FormControl
