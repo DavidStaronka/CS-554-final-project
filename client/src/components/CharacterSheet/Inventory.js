@@ -52,7 +52,7 @@ function Inventory(props) {
           <FormControl
             type="text"
             value={weapon.name}
-            //onChange={(e) => handleWeaponChange(weapon, "name", e.target.value)}
+            onChange={(e) => handleWeaponChange(weapon, "name", e.target.value)}
             className="mx-auto"
           />
         </td>
