@@ -23,7 +23,7 @@ function Stats(props) {
     const updatedChar = { ...char };
     updatedChar.hitPoints[stat] = val;
     if (stat === "current") {
-      socketRef.current.emit("message", val);
+      socketRef.current.emit("healthChange", val, char.sessionId, char.id);
     }
     setChar(updatedChar);
     setSaved(false);

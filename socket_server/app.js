@@ -1,37 +1,38 @@
 const app = require('express');
 const http = require('http').createServer(app);
 var io = require('socket.io')(http);
-users = [];
+rooms = {};
 
 io.on('connection', (socket) => {
     console.log('new client connected', socket.id);
 
-    socket.on('user_join', (name, room) => {
+    socket.on('user_join', (charId, sessionId) => {
         socket.join(room);
-        users.push({
+        if(!rooms[sessionId]){
+            rooms[sessionId] = [];
+        }
+        rooms[sessionId].push({
             id: socket.id,
-            name: name,
-            room: room
+            charId: charId
         });
-        io.to(room).emit('user_join', name);
+        io.to(room).emit('user_join', charId);
     });
 
-    socket.on('message', ({message}) => {
-        for(user of users) {
-            if (user.id === socket.id) {
-                console.log(user.name, message, socket.id);
-                io.to(user.room).emit('message', { name: user.name, message: message });
+    socket.on('healthChange', (val, sessionId, charId) => {
+        for (user of rooms[sessionId]){
+            if(user.charId === charId){
+                io.to(user.id).emit('healthChange', val);
             }
         }
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (sessionId) => {
         console.log('Disconnect Fired');
-        for(user of users) {
+        for(user of rooms[sessionId]) {
             if (user.id === socket.id) {
                 console.log(user.name, socket.id);
-                io.to(user.room).emit('user_left', user.name);  
-                users.splice(users.indexOf(user), 1);  
+                io.to(user.room).emit('user_left', user.name);
+                rooms[sessionId].splice(rooms[sessionId].indexOf(user), 1);
             }
         }
     });
