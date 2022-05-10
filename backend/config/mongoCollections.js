@@ -18,4 +18,5 @@ const getCollectionFn = (collection) => {
 module.exports = {
   users: getCollectionFn("users"),
   characters: getCollectionFn("characters"),
+  sessions: getCollectionFn("sessions")
 };
