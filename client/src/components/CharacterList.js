@@ -9,12 +9,16 @@ function CharacterList() {
   const [data, setData] = useState(undefined);
   const [upToDate, setUpToDate] = useState(false);
 
-  const getData = async () => {
-    let response = await axios.get(`http://localhost:5000/character/characters/${currentUser.uid}`);
-    setData(response.data);
-    console.log(response.data);
-  };
   useEffect(() => {
+    const getData = async () => {
+      try{
+        let response = await axios.get(`http://localhost:5000/character/characters/${currentUser.uid}`);
+        setData(response.data);
+        console.log(response.data);
+      }catch(err){
+        console.log(err);
+      }
+    };
     if (currentUser && !upToDate) {
       getData();
       setUpToDate(true);
