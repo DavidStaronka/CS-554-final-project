@@ -13,7 +13,7 @@ module.exports = {
       userEmail: userEmail,
       _id: firebaseuid,
       sessions: [],
-      characters: [],
+      characters: []
     };
 
     const insertInfo = await userCollection.insertOne(newUser);
