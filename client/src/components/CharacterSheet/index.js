@@ -100,22 +100,22 @@ function CharacterSheet() {
     };
   }, []);
 
-  const getData = async () => {
-    let response = await axios.get(`http://localhost:5000/character/${id}`);
-    setChar(response.data);
-    console.log(response.data);
-    setLoading(false);
-  };
+  
 
   // get char from db
   useEffect(() => {
     console.log("id useEffect fired");
-    try {
-      //setChar(placeholder);
-      getData();
-    } catch (e) {
-      setError(e);
-    }
+    const getData = async () => {
+      try {
+        let response = await axios.get(`http://localhost:5000/character/${id}`);
+        setChar(response.data);
+        console.log(response.data);
+        setLoading(false);
+      } catch (e) {
+        setError(e);
+      }
+    };
+    getData();
   }, [id]);
 
   // Lets DM change player health
