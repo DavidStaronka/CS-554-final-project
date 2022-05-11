@@ -1,8 +1,9 @@
 import { Container, Row, FormControl, Button } from "react-bootstrap";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import io from "socket.io-client";
+import { AuthContext } from "../../firebase/Auth";
 
 import Stats from "./Stats";
 import Skills from "./Skills";
@@ -85,10 +86,12 @@ const placeholder = {
 };
 
 function CharacterSheet() {
+    const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [char, setChar] = useState({});
   const [saved, setSaved] = useState(true);
+  const [connected, setConnected] = useState(false);
   const { id } = useParams();
   const socketRef = useRef();
 
@@ -107,7 +110,7 @@ function CharacterSheet() {
     console.log("id useEffect fired");
     const getData = async () => {
       try {
-        let response = await axios.get(`http://localhost:5000/character/${id}`);
+        let response = await axios.get(`http://localhost:5000/character/${id}`, {userId: currentUser.uid});
         setChar(response.data);
         console.log(response.data);
         setLoading(false);
@@ -140,6 +143,17 @@ function CharacterSheet() {
       pdf.save("characterSheet.pdf");
     });
   }
+
+    function joinSession() {
+        socketRef.current.emit("user_join", char.id, char.sessionId);
+        setConnected(true);
+    }
+
+    function leaveSession() {
+        socketRef.current.emit("user_left", char.sessionId);
+        setConnected(false);
+    }
+
 
   const handleCharChange = (stat, val) => {
     const updatedChar = { ...char };
@@ -190,32 +204,64 @@ function CharacterSheet() {
   }
   if (error) {
     return <h2>{error}</h2>;
+  } if (!connected) {
+    return (
+            <div id="divToPrint">
+            <div className="d-block p-3 ">
+                {longRestButton()}
+                {saveButton()}
+                <Button onClick={printDocument} className="btn btn-lg btn-primary mx-5">
+                Print
+                </Button>
+                <Button onClick={joinSession} className="btn btn-lg btn-primary mx-5">
+                    Join Session
+                </Button>
+            </div>
+            <Container className="border border-3 border-secondary mx-auto p-3">
+                <h4>Session ID:</h4>
+                <h3 className="w-50 mx-auto" type="text">
+                {char.sessionId}
+                </h3>
+                <Titles char={[char, setChar]} saved={[saved, setSaved]} />
+                <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} />
+                <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
+                <Inventory char={[char, setChar]} saved={[saved, setSaved]} />
+                <Row className="p-2">
+                <Skills char={[char, setChar]} saved={[saved, setSaved]} />
+                <Spells char={[char, setChar]} saved={[saved, setSaved]} />
+                </Row>
+            </Container>
+            </div>
+    );
   }
-  return (
-    <div id="divToPrint">
-      <div className="d-block p-3 ">
-        {longRestButton()}
-        {saveButton()}
-        <Button onClick={printDocument} className="btn btn-lg btn-primary mx-5">
-          Print
-        </Button>
-      </div>
-      <Container className="border border-3 border-secondary mx-auto p-3">
-        <h4>Session ID:</h4>
-        <h3 className="w-50 mx-auto" type="text">
-          {char.sessionId}
-        </h3>
-        <Titles char={[char, setChar]} saved={[saved, setSaved]} />
-        <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} />
-        <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
-        <Inventory char={[char, setChar]} saved={[saved, setSaved]} />
-        <Row className="p-2">
-          <Skills char={[char, setChar]} saved={[saved, setSaved]} />
-          <Spells char={[char, setChar]} saved={[saved, setSaved]} />
-        </Row>
-      </Container>
-    </div>
-  );
+    return (
+        <div id="divToPrint">
+        <div className="d-block p-3 ">
+            {longRestButton()}
+            {saveButton()}
+            <Button onClick={printDocument} className="btn btn-lg btn-primary mx-5">
+            Print
+            </Button>
+            <Button onClick={leaveSession} className="btn btn-lg btn-primary mx-5">
+                Leave Session
+            </Button>
+        </div>
+        <Container className="border border-3 border-secondary mx-auto p-3">
+            <h4>Session ID:</h4>
+            <h3 className="w-50 mx-auto" type="text">
+            {char.sessionId}
+            </h3>
+            <Titles char={[char, setChar]} saved={[saved, setSaved]} />
+            <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} />
+            <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
+            <Inventory char={[char, setChar]} saved={[saved, setSaved]} />
+            <Row className="p-2">
+            <Skills char={[char, setChar]} saved={[saved, setSaved]} />
+            <Spells char={[char, setChar]} saved={[saved, setSaved]} />
+            </Row>
+        </Container>
+        </div>
+    );
 }
 
 export default CharacterSheet;

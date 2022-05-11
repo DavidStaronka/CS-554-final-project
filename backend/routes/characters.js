@@ -28,7 +28,7 @@ router.get("/characters/:userId", async (req, res) => {
 router.get("/:characterId", async (req, res) => {
   try {
     console.log(`ROUTE CHARID ${req.params.characterId}`);
-    const characters = await characterData.getCharacter(req.params.characterId);
+    const characters = await characterData.getCharacter(req.params.characterId, req.body.userId);
     res.status(200).json(characters);
   } catch (e) {
     console.log(e);
