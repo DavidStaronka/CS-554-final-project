@@ -93,12 +93,14 @@ module.exports = {
     return allCharacters;
   },
 
-  async getCharacter(characterId) {
+  async getCharacter(characterId, userID) {
     console.log(`GET CHAR ID ${characterId}`);
     if (!characterId || typeof characterId !== "string") throw "Must provice a valid characterId";
+    if (!userID || typeof userID !== "string") throw "Must provice a valid userID";
     const characterCollection = await characters();
     const character = await characterCollection.findOne({ _id: ObjectId(characterId) });
     if (character === null) return null;
+    if (character.profileId !== userID) throw "You do not have access to this character";
     return character;
   },
 
@@ -107,7 +109,7 @@ module.exports = {
 
     const characterCollection = await characters();
     const character = await characterCollection.findOne({ _id: characterId });
-    if (character === null) return false;
+    if (character === null) return false;   
     return true;
   },
 };

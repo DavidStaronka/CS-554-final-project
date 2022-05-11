@@ -33,6 +33,9 @@ io.on('connection', (socket) => {
                 console.log(user.name, socket.id);
                 io.to(user.room).emit('user_left', user.name);
                 rooms[sessionId].splice(rooms[sessionId].indexOf(user), 1);
+                if(rooms[sessionId].length === 0){
+                    delete rooms[sessionId];
+                }
             }
         }
     });
