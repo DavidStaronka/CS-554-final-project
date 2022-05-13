@@ -1,9 +1,11 @@
 import { Row, Col, FormControl, Table, Button } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 
-function Inventory(props) {
+function Weapons(props) {
   const [char, setChar] = props.char;
+  // const weaponNum = props.weaponNum;
   const setSaved = props.saved[1];
+  let weaponList = [];
 
   const handleCharChange = (stat, val) => {
     const updatedChar = { ...char };
@@ -72,17 +74,58 @@ function Inventory(props) {
     );
   };
 
+  const makeForms = (weaponNum) => {
+    for(let i=0;i<weaponNum;i++){
+      weaponList.push(
+        <tr key={i}>
+          <td>
+            <FormControl
+              type="text"
+              value={char.weapons[i].name}
+              onChange={(e) => handleWeaponChange(char.weapons[i], "name", e.target.value)}
+              className="mx-auto"
+            />
+          </td>
+          <td>
+            <FormControl
+              as="textarea"
+              type="text"
+              value={char.weapons[i].description}
+              onChange={(e) => handleWeaponChange(char.weapons[i], "description", e.target.value)}
+              className="mx-auto"
+            />
+          </td>
+          <td>
+            <Button onClick={(e) => handleWeaponDelete(char.weapons[i])}>Delete</Button>
+          </td>
+        </tr>
+      );
+    } 
+  }
+
+  makeForms(char.weapons.length);
+
   return (
-    <Col className=" border-primary m-1">
-      <h5>Inventory</h5>
-      <FormControl
-        as="textarea"
-        type="textarea"
-        value={char.inventory}
-        onChange={(e) => handleCharChange("inventory", e.target.value)}
-        className=" mx-auto"
-      />
-    </Col>
+      <Col className=" border-primary m-1">
+        <h5>Weapons</h5>
+        <Table bordered>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th style={{ width: "65%" }}>Description</th>
+            </tr>
+          </thead>
+          <tbody>{weaponList}</tbody>
+        </Table>
+        <Button
+          onClick={(e) => {
+            addWeapon();
+          }}
+        >
+          Add Weapon
+        </Button>
+      </Col>
+    
   );
 }
-export default Inventory;
+export default Weapons;

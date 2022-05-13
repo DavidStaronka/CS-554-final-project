@@ -11,6 +11,7 @@ import Inventory from "./Inventory";
 import Titles from "./Titles";
 import Spells from "./Spells";
 import Proficiencies from "./Proficiencies";
+import Weapons from "./Weapons";
 import { useParams } from "react-router-dom";
 
 const axios = require("axios");
@@ -108,8 +109,7 @@ function CharacterSheet() {
     console.log("id useEffect fired");
     const getData = async () => {
       try {
-        let response = await axios.get(`http://localhost:5000/character/${id}/${currentUser.uid}`, 
-        );
+        let response = await axios.get(`http://localhost:5000/character/${id}/${currentUser.uid}`);
         setChar(response.data);
         console.log(response.data);
         setLoading(false);
@@ -179,6 +179,21 @@ function CharacterSheet() {
     );
   };
 
+  const connectionButton = () => {
+    if (connected) {
+      return (
+        <Button onClick={leaveSession} className="btn btn-lg btn-primary mx-5">
+          Leave Session
+        </Button>
+      );
+    }
+    return (
+      <Button onClick={joinSession} className="btn btn-lg btn-primary mx-5">
+        Join Session
+      </Button>
+    );
+  };
+
   const handleLongRest = () => {
     const updatedChar = { ...char };
     updatedChar.hitPoints.current = updatedChar.hitPoints.max;
@@ -203,36 +218,7 @@ function CharacterSheet() {
   if (error) {
     return <h2>{error}</h2>;
   }
-  if (!connected) {
-    return (
-      <div id="divToPrint">
-        <div className="d-block p-3 ">
-          {longRestButton()}
-          {saveButton()}
-          <Button onClick={printDocument} className="btn btn-lg btn-primary mx-5">
-            Print
-          </Button>
-          <Button onClick={joinSession} className="btn btn-lg btn-primary mx-5">
-            Join Session
-          </Button>
-        </div>
-        <Container className="border border-3 border-secondary mx-auto p-3">
-          <h4>Session ID:</h4>
-          <h3 className="w-50 mx-auto" type="text">
-            {char.sessionId}
-          </h3>
-          <Titles char={[char, setChar]} saved={[saved, setSaved]} />
-          <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} />
-          <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
-          <Inventory char={[char, setChar]} saved={[saved, setSaved]} />
-          <Row className="p-2">
-            <Skills char={[char, setChar]} saved={[saved, setSaved]} />
-            <Spells char={[char, setChar]} saved={[saved, setSaved]} />
-          </Row>
-        </Container>
-      </div>
-    );
-  }
+
   return (
     <div id="divToPrint">
       <div className="d-block p-3 ">
@@ -241,9 +227,7 @@ function CharacterSheet() {
         <Button onClick={printDocument} className="btn btn-lg btn-primary mx-5">
           Print
         </Button>
-        <Button onClick={leaveSession} className="btn btn-lg btn-primary mx-5">
-          Leave Session
-        </Button>
+        {connectionButton()}
       </div>
       <Container className="border border-3 border-secondary mx-auto p-3">
         <h4>Session ID:</h4>
@@ -253,7 +237,11 @@ function CharacterSheet() {
         <Titles char={[char, setChar]} saved={[saved, setSaved]} />
         <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} />
         <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
-        <Inventory char={[char, setChar]} saved={[saved, setSaved]} />
+        <Row>
+          <Weapons char={[char, setChar]} saved={[saved, setSaved]}></Weapons>
+          <Inventory char={[char, setChar]} saved={[saved, setSaved]} />
+        </Row>
+
         <Row className="p-2">
           <Skills char={[char, setChar]} saved={[saved, setSaved]} />
           <Spells char={[char, setChar]} saved={[saved, setSaved]} />
