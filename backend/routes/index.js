@@ -6,7 +6,7 @@ const profileRoutes = require('./profile');
 const constructorMethod = (app) => {
   app.use("/users", userRoutes);
   app.use("/character", characterRoutes);
-  app.use("/sessions", sessionRoutes);
+  app.use("/session", sessionRoutes);
   app.use("/profile", profileRoutes);
 
   app.use("*", (req, res) => {

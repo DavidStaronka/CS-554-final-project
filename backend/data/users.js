@@ -13,7 +13,7 @@ module.exports = {
       userEmail: userEmail,
       _id: firebaseuid,
       sessions: [],
-      characters: []
+      characters: [],
     };
 
     const insertInfo = await userCollection.insertOne(newUser);
@@ -32,7 +32,7 @@ module.exports = {
     if (!userID || typeof userID !== "string") throw "Must provide a valid userID";
 
     const userCollection = await users();
-    const user = await userCollection.findOne({ userID: userID });
+    const user = await userCollection.findOne({ _id: userID });
     if (user === null) return false;
     return true;
   },
