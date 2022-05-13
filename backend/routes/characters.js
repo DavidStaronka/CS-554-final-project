@@ -25,10 +25,11 @@ router.get("/characters/:userId", async (req, res) => {
   }
 });
 
-router.get("/:characterId", async (req, res) => {
+router.get("/:characterId/:userId", async (req, res) => {
   try {
-    console.log(`ROUTE CHARID ${req.params.characterId}`);
-    const characters = await characterData.getCharacter(req.params.characterId, req.body.userId);
+    console.log(`ROUTE PARAMS${JSON.stringify(req.params, null, 4)}`);
+
+    const characters = await characterData.getCharacter(req.params.characterId, req.params.userId);
     res.status(200).json(characters);
   } catch (e) {
     console.log(e);

@@ -1,12 +1,16 @@
 const { ObjectId } = require("mongodb");
 const collections = require("../config/mongoCollections");
 const sessions = collections.sessions;
+const userData = require('./users');
 
 
-async function createSession(sessionName, characterIds = []){
+async function createSession(sessionName, dungeonMasterId, characterIds = []){
     if (!sessionName) throw "Must provide a session name";
     if (typeof sessionName !== 'string') throw 'Session name must be a string';
     // Add any Session Name restrictions? Len? ints?
+
+    const existsDM = await userData.userExists(dungeonMasterId);
+    if (!existsDM) throw 'Must be a dungeon master';
 
     // Create a session object
     const sessionCollection = await sessions();
@@ -22,9 +26,12 @@ async function createSession(sessionName, characterIds = []){
     return newSession;
 }
 
-async function getSession(sessionId){
+async function getSession(sessionId, dungeonMasterId){
     if (!sessionId) throw "Must provide a session id";
     if (typeof sessionId !== 'string') throw 'Session name must be a string';
+
+    const existsDM = await userData.userExists(dungeonMasterId);
+    if (!existsDM) throw 'Must be a dungeon master';
 
     // Mongo look up for session
     const sessionCollection = await sessions();
@@ -34,7 +41,10 @@ async function getSession(sessionId){
     return session;
 }
 
-async function getSessions(){
+async function getSessions(dungeonMasterId){
+    const existsDM = await userData.userExists(dungeonMasterId);
+    if (!existsDM) throw 'Must be a dungeon master';
+
     const sessionCollection = await sessions();
     const sessionList = await sessionCollection.find({}).toArray();
     if (!sessionList) throw "No sessions exist";
@@ -42,9 +52,12 @@ async function getSessions(){
     return sessionList;
 }
 
-async function deleteSession(sessionId){
+async function deleteSession(sessionId, dungeonMasterId){
     if (!sessionId) throw "Must provide a session id";
     if (typeof sessionId !== 'string') throw 'Session name must be a string';
+
+    const existsDM = await userData.userExists(dungeonMasterId);
+    if (!existsDM) throw 'Must be a dungeon master';
 
     // Check if sesison exists
     const sessionCollection = await sessions();
@@ -92,10 +105,24 @@ async function addCharacterToSession(sessionId, characterId){
     return newSession
 }
 
+async function sessionExists(sessionName){
+    if (!sessionName) throw "Must provide a session id";
+    if (typeof sessionName !== 'string') throw 'Session id must be a string';
+
+    // const existsDM = await userData.userExists(dungeonMasterId);
+    // if (!existsDM) throw 'Must be a dungeon master';
+
+    const sessionCollection = await sessions();
+    const session = await sessionCollection.findOne({ sessionName: sessionName });
+
+    return (session) ? true : false;
+}
+
 module.exports = {
     createSession,
     getSession,
     getSessions,
     deleteSession,
-    addCharacterToSession
+    addCharacterToSession,
+    sessionExists
 }

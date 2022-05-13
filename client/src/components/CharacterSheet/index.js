@@ -109,9 +109,8 @@ function CharacterSheet() {
     console.log("id useEffect fired");
     const getData = async () => {
       try {
-        let response = await axios.get(`http://localhost:5000/character/${id}`, {
-          userId: currentUser.uid,
-        });
+        let response = await axios.get(`http://localhost:5000/character/${id}/${currentUser.uid}`, 
+        );
         setChar(response.data);
         console.log(response.data);
         setLoading(false);
