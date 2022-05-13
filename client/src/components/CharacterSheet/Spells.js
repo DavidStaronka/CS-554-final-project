@@ -40,7 +40,7 @@ function Spells(props) {
         setSaved(false);
       };
       return (
-        <tr key={uuidv4()}>
+        <tr key={`spell${char.spells.indexOf(spell)}`}>
           <td>
             <FormControl
               type="text"
@@ -53,9 +53,7 @@ function Spells(props) {
             <FormControl
               as="textarea"
               value={spell.description}
-              onChange={(e) =>
-                handleSpellChange(spell, "description", e.target.value)
-              }
+              onChange={(e) => handleSpellChange(spell, "description", e.target.value)}
               className="mx-auto"
               style={{ height: "75px" }}
             />
@@ -116,7 +114,7 @@ function Spells(props) {
       );
     };
     return (
-      <div className="border border-warning border-3 m-1" key={uuidv4()}>
+      <div className="border border-warning border-3 m-1">
         <h5>{spellLevel[level]}</h5>
         {formatSpellSlots()}
         <Table bordered>
@@ -131,7 +129,7 @@ function Spells(props) {
               if (spell.level === level) {
                 return formatSpell(spell);
               }
-              return <tr key={uuidv4()}></tr>;
+              return <tr ></tr>;
             })}
           </tbody>
         </Table>
