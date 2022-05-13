@@ -87,4 +87,15 @@ h6{
   text-decoration: underline;
 }
 
+.avatar {
+  vertical-align: middle;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border-width: 5px;
+  border-color: gray;
+  border-style: outset;
+}
+
+
 .html2canvas-container { width: 2000px !important; height: 2000px !important; }

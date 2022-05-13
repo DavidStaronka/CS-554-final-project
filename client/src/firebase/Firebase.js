@@ -1,7 +1,13 @@
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+// import 'firebase/auth';
+// import * as storage from'firebase/storage';
 
-const firebaseApp = firebase.initializeApp({
+import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+
+
+
+const firebaseApp = initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
@@ -10,4 +16,9 @@ const firebaseApp = firebase.initializeApp({
   appId: process.env.REACT_APP_FIREBASE_APP_ID
 });
 
-export default firebaseApp;
+const auth = getAuth()
+const storage = getStorage();
+
+// const storage = getStorage(firebaseApp);
+// console.log(storage.storage)
+export {auth, storage, firebaseApp as default};
