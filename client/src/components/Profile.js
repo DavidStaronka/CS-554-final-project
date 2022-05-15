@@ -36,6 +36,7 @@ function Profile() {
       Key: photo.name, 
       Body: photo
   };
+  try {
   await s3.upload(params, async function(s3Err, data) {
     if (s3Err) throw s3Err
     // console.log(`File uploaded successfully at ${data.Location}`)
@@ -44,6 +45,9 @@ function Profile() {
     setLoading(false)
     window.location.reload()
 });
+  } catch (e){
+    alert("Error: could not upload your image please try again")
+  }
 
   }
 
