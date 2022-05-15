@@ -18,6 +18,7 @@ function SignUp() {
   const { currentUser } = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState("");
   const [signingUp, setSigningUp] = useState(false);
+  let errorMess;
 
   const SignOutButton = () => {
     return (
@@ -36,24 +37,25 @@ function SignUp() {
   useEffect(() => {
     if (currentUser && signingUp) {
       addtoMongo(currentUser.uid, currentUser.email);
-      document.getElementById("pwerror").hidden = true
+      //document.getElementById("pwerror").hidden = true
     }
-
   }, [currentUser, signingUp]);
 
   const handleChange = (e) => {
     e.preventDefault();
-    document.getElementById("pwerror").hidden = true
+    //document.getElementById("pwerror").hidden = true
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    document.getElementById("pwerror").hidden = true
+    // document.getElementById("pwerror").hidden = true
     const { email, passwordOne, passwordTwo } = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch("Passwords do not match");
-      document.getElementById("pwerror").hidden = false
+      // document.getElementById("pwerror").hidden = false
       return false;
+    } else {
+      setPwMatch("");
     }
 
     try {
@@ -66,9 +68,18 @@ function SignUp() {
     }
   };
 
+  if (pwMatch) {
+    errorMess = (
+      <h4 id="pwerror" className="error">
+        {pwMatch}
+      </h4>
+    );
+  } else {
+    errorMess = <h4></h4>;
+  }
+
   if (currentUser) {
     console.log(currentUser.uid);
-
     return (
       <div>
         You are signed in as {currentUser.email}
@@ -85,7 +96,7 @@ function SignUp() {
   return (
     <div>
       <h1>Sign up</h1>
-      <h4 id="pwerror" className="error">{pwMatch}</h4>
+      {errorMess}
       <form onSubmit={handleSignUp}>
         <div className="form-group">
           <label>
