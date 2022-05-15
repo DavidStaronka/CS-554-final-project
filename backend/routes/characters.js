@@ -2,15 +2,24 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const characterData = data.characters;
+const sessionData = data.sessions;
 
 router.post("/", async (req, res) => {
   try {
-    console.log(req.body);
-    const newUser = await characterData.createCharacter(req.body);
-    res.status(200).json({});
+    let ret;
+    //console.log(req.body);
+    if (await sessionData.sessionExists(req.body.session)) {
+      const newCharacter = await characterData.createCharacter(req.body);
+      console.log(`CHARACTER ${newCharacter.toString()}`);
+      await sessionData.addCharacterToSession(req.body.session, newCharacter.toString());
+    } else {
+      ret = { message: "session does not exist" };
+    }
+
+    res.status(200).json(ret);
   } catch (e) {
     console.log(e);
-    res.sendStatus(500);
+    res.status(500).json({ message: e });
   }
 });
 

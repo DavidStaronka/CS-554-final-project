@@ -32,11 +32,15 @@ function CharacterForm(props) {
         session: session.value,
         userId: currentUser.uid,
       });
-      console.log(response);
+      if (response.data.message) {
+        throw response.data.message;
+      }
+      console.log(JSON.stringify(response, null, 4));
       setUpToDate(false);
       setCollapsed(true);
     } catch (error) {
-      console.log(error);
+      console.log(JSON.stringify(error, null, 4));
+      alert(error);
     }
   };
 

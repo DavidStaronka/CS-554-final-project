@@ -27,11 +27,10 @@ function SessionForm(props) {
         sessionName: session.value,
         userId: currentUser.uid,
       });
-      console.log(response);
       setUpToDate(false);
       setCollapsed(true);
     } catch (error) {
-      console.log(error);
+      alert(JSON.stringify(error.response.data.error));
     }
   };
 
