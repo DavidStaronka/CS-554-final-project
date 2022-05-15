@@ -36,14 +36,23 @@ function SignUp() {
   useEffect(() => {
     if (currentUser && signingUp) {
       addtoMongo(currentUser.uid, currentUser.email);
+      document.getElementById("pwerror").hidden = true
     }
+
   }, [currentUser, signingUp]);
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    document.getElementById("pwerror").hidden = true
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    document.getElementById("pwerror").hidden = true
     const { email, passwordOne, passwordTwo } = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch("Passwords do not match");
+      document.getElementById("pwerror").hidden = false
       return false;
     }
 
@@ -53,7 +62,7 @@ function SignUp() {
       setSigningUp(true);
       // addtoMongo()
     } catch (error) {
-      alert(error);
+      alert(`Could not create account for email ${email.value}, please enter a valid email`);
     }
   };
 
@@ -76,7 +85,7 @@ function SignUp() {
   return (
     <div>
       <h1>Sign up</h1>
-      {pwMatch && <h4 className="error">{pwMatch}</h4>}
+      <h4 id="pwerror" className="error">{pwMatch}</h4>
       <form onSubmit={handleSignUp}>
         <div className="form-group">
           <label>
@@ -100,6 +109,7 @@ function SignUp() {
               name="passwordOne"
               type="password"
               placeholder="Password"
+              onChange={handleChange}
               required
             />
           </label>
@@ -113,6 +123,7 @@ function SignUp() {
               name="passwordTwo"
               type="password"
               placeholder="Confirm Password"
+              onChange={handleChange}
               required
             />
           </label>

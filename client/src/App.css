@@ -97,5 +97,9 @@ h6{
   border-style: outset;
 }
 
+#pwerror {
+  color: red;
+}
+
 
 .html2canvas-container { width: 2000px !important; height: 2000px !important; }
