@@ -111,7 +111,7 @@ function CharacterSheet() {
       try {
         let response = await axios.get(`http://localhost:5000/character/${id}/${currentUser.uid}`);
         setChar(response.data);
-        console.log(response.data);
+        console.log(char);
         setLoading(false);
       } catch (e) {
         setError(e);
@@ -120,15 +120,12 @@ function CharacterSheet() {
     getData();
   }, [id]);
 
-  // Lets DM change player health
-  useEffect(() => {
-    socketRef.current.on("healthChange", (newCurrentHealth) => {
-      const updatedChar = { ...char };
-      updatedChar.healthPoints.current = newCurrentHealth;
-      setChar(updatedChar);
-      setSaved(false);
-    });
-  }, [char]);
+    useEffect(() => {
+        socketRef.current.on("Room_closed" , () => {
+            alert("The DM has not yet opened the session");
+            setConnected(false);
+        });
+    }, []);
 
   function printDocument() {
     const input = document.getElementById("divToPrint");
@@ -144,7 +141,7 @@ function CharacterSheet() {
   }
 
   function joinSession() {
-    socketRef.current.emit("user_join", char.id, char.sessionId);
+    socketRef.current.emit("user_join", id, char.name, char.sessionId, char.hitPoints.current);
     setConnected(true);
   }
 

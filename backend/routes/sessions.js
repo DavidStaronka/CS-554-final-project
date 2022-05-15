@@ -4,6 +4,7 @@ const data = require("../data");
 const sessionData = data.sessions;
 const userData = data.users;
 
+/*
 router.get("/", async (req, res) => {
   if (!req.body.userId) {
     res.status(403).send("No permission, please login first");
@@ -25,48 +26,23 @@ router.get("/", async (req, res) => {
     return;
   }
 });
+*/
 
-router.get("/:sessionId", async (req, res) => {
-  const { sessionId } = req.params;
-  if (!sessionId) return res.status(400).json({ error: "Must provide a session id" });
-  if (typeof sessionId !== "string")
-    return res.status(400).json({ error: "Session id must be a string" });
-
-  if (!req.body.userId) {
-    res.status(403).send("No permission, please login first");
-    return;
-  }
-
-  try {
-    const userExists = await userData.userExists(req.body.userId);
-    if (!userExists) return res.status(403).json({ error: "Must be a Dungeon Master" });
-  } catch (e) {}
-
-  try {
-    const session = await sessionData.getSession(sessionId);
-    if (!session) return res.status(400).json({ error: "Session does not exist" });
-    res.status(200).json(session);
-    return;
-  } catch (e) {
-    res.status(500).json({ error: e });
-    return;
-  }
-});
-
-router.get("/exists/:sessionName", async (req, res) => {
-  const { sessionName } = req.params;
+/*
+router.get("/exists/:sessionName/:userId", async (req, res) => {
+  const { sessionName } = req.params.sessionName;
   if (!sessionName) return res.status(400).json({ error: "Must provide a session id" });
   if (typeof sessionName !== "string")
     return res.status(400).json({ error: "Session id must be a string" });
 
   //Must be a DM
-  if (!req.body.userId) {
+  if (!req.params.userId) {
     res.status(403).send("No permission, please login first");
     return;
   }
 
   try {
-    const userExists = await userData.userExists(req.body.userId);
+    const userExists = await userData.userExists(req.params.userId);
     if (!userExists) return res.status(403).json({ error: "Must be a Dungeon Master" });
   } catch (e) {}
 
@@ -80,6 +56,7 @@ router.get("/exists/:sessionName", async (req, res) => {
     return;
   }
 });
+*/
 
 router.get("/sessions/:userId", async (req, res) => {
   try {
@@ -92,8 +69,38 @@ router.get("/sessions/:userId", async (req, res) => {
   }
 });
 
+router.get("/:sessionId/:userId", async (req, res) => {
+    const sessionId = req.params.sessionId;
+    if (!sessionId) return res.status(400).json({ error: "Must provide a session id" });
+    if (typeof sessionId !== "string")
+      return res.status(400).json({ error: "Session id must be a string" });
+  
+    if (!req.params.userId) {
+      res.status(403).send("No permission, please login first"); 
+      return;
+    }
+    // console.log("q: " + req.params.userId);
+  
+    try {
+      const userExists = await userData.userExists(req.params.userId);
+      if (!userExists) return res.status(403).json({ error: "Must be a Dungeon Master" });
+    } catch (e) {}
+  
+    // console.log("e: " + req.params.userId);
+    try {
+      const session = await sessionData.getSession(sessionId, req.params.userId);
+      if (!session) return res.status(400).json({ error: "Session does not exist" });
+      res.status(200).json(session);
+      return;
+    } catch (e) {
+      res.status(500).json({ error: e });
+      return;
+    }
+  });
+
 router.post("/", async (req, res) => {
   // Must be a DM
+  console.log(req.body.userId);
   if (!req.body.userId) {
     res.status(403).send("No permission, please login first");
     return;
