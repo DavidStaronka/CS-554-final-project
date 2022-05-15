@@ -11,6 +11,12 @@ async function createSession(sessionName, dungeonMasterId, characterIds = []) {
   const existsDM = await userData.userExists(dungeonMasterId);
   if (!existsDM) throw "Must be a dungeon master";
 
+  const exists = await sessionExists(sessionName);
+
+  if (exists) {
+    throw "Session Already Exists";
+  }
+
   // Create a session object
   const sessionCollection = await sessions();
   const newSession = {
@@ -72,17 +78,19 @@ async function deleteSession(sessionId, dungeonMasterId) {
   return true;
 }
 
-async function addCharacterToSession(sessionId, characterId) {
-  if (!sessionId) throw "Must provide a session id";
-  if (typeof sessionId !== "string") throw "Session id must be a string";
+async function addCharacterToSession(sessionName, characterId) {
+  if (!sessionName) throw "Must provide a session id";
+  if (typeof sessionName !== "string") throw "Session id must be a string";
   if (!characterId) throw "Must provide a character id";
   if (typeof characterId !== "string") throw "Character id must be a string";
 
   // Check if session exists
   const sessionCollection = await sessions();
-  const session = await this.getSession(sessionId);
-  if (!session) throw "Session not found";
-  const sessionOid = ObjectId(session._id);
+  // const session = await this.getSession(sessionId);
+  // if (!session) throw "Session not found";
+  // const sessionOid = ObjectId(session._id);
+
+  const session = await sessionCollection.findOne({ sessionName: sessionName });
 
   // Add new id to the list
   const { characterIds } = session;
@@ -96,7 +104,10 @@ async function addCharacterToSession(sessionId, characterId) {
   };
 
   // Update the db
-  const updateInfo = await sessionCollection.updateOne({ _id: sessionOid }, { $set: newSession });
+  const updateInfo = await sessionCollection.updateOne(
+    { sessionName: sessionName },
+    { $set: newSession }
+  );
 
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Update failed";
 
@@ -113,7 +124,12 @@ async function sessionExists(sessionName) {
   const sessionCollection = await sessions();
   const session = await sessionCollection.findOne({ sessionName: sessionName });
 
-  return session ? true : false;
+  console.log(`SESSION EXISTS${session}`);
+
+  if (session === null) {
+    return false;
+  }
+  return true;
 }
 
 module.exports = {
