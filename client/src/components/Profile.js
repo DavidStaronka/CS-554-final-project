@@ -40,7 +40,7 @@ function Profile() {
     if (s3Err) throw s3Err
     // console.log(`File uploaded successfully at ${data.Location}`)
     setPhotoURL(data.Location)
-    updateProfile(currentUser, {photoURL : data.Location});
+    await updateProfile(currentUser, {photoURL : data.Location});
     setLoading(false)
     window.location.reload()
 });
@@ -50,7 +50,7 @@ function Profile() {
   useEffect(() => {
     console.log(currentUser)
     console.log(photoURL)
-  }, [photoURL, currentUser, currentUser.photoURL])
+  }, [photoURL, currentUser])
 
   if (!currentUser){
     return <p> Please login to view your profile</p>
@@ -64,7 +64,7 @@ function Profile() {
 
       <h1>Current Profile Picture</h1>
       <br></br>
-      <img src={currentUser.photoURL} alt="Avatar" className="avatar" />
+      <img src={currentUser.photoURL ? currentUser.photoURL : photoURL} alt="Avatar" className="avatar" />
       <br></br>
       <br></br>
 

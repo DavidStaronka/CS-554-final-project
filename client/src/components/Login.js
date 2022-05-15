@@ -9,12 +9,11 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     let { email, password } = event.target.elements;
-    console.log(event.target.elements);
 
     try {
       await callSignInWithEmailAndPassword(email.value, password.value);
     } catch (error) {
-      alert(error);
+      alert("Invalid Login Credentials");
     }
   };
 
@@ -31,7 +30,6 @@ function Login() {
     }
   };
   if (currentUser) {
-    // console.log(currentUser.uid);
     return (
       <Navigate
         to={{
