@@ -22,6 +22,11 @@ function Profile() {
         document.getElementById("userprofile").value = ""
         return
       }
+      if (e.target.files[0].size > 1040846){
+        alert("File must be smaller than 1 MB");
+        document.getElementById("userprofile").value = ""
+        return
+      }
 
       setPhoto(e.target.files[0])
       console.log(e.target.files[0])
