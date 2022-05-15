@@ -17,7 +17,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("user_join", (charId, charName, sessionId, health, max_health, ) => {
+  socket.on("user_join", (charId, charName, sessionId, health, max_health) => {
     console.log("char joined", charId, charName, sessionId, health, max_health);
     if (!rooms[sessionId]) {
       io.to(socket.id).emit("Room_closed");
@@ -72,6 +72,15 @@ io.on("connection", (socket) => {
     io.to(rooms[sessionId].DMID).emit("user_left", {
       charId: charId,
     });
+    for (user of rooms[sessionId].users) {
+      if (user.id === socket.id) {
+        console.log(user.name, socket.id);
+        rooms[sessionId].users.splice(rooms[sessionId].users.indexOf(user), 1);
+        if (rooms[sessionId].users.length === 0) {
+          // delete rooms[sessionId];
+        }
+      }
+    }
   });
 });
 

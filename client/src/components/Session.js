@@ -49,19 +49,23 @@ function Session(props) {
 
   useEffect(() => {
     socketRef.current.on("user_join", ({ charId, charName, health, max_health }) => {
-      console.log("User Join");
-      setChars((prev) => [...prev, { charId, charName, health, max_health }]);
+      console.log(`User Join \n Params: ${charId}`);
+      let newChar = { charId: charId, charName: charName, health: health, max_health: max_health };
+      setChars([...chars, newChar]);
+      console.log(JSON.stringify(newChar, null, 4));
       console.log(JSON.stringify(chars[0], null, 4));
     });
 
     socketRef.current.on("user_left", ({ charId }) => {
       console.log(`front end recived user_left \n Name: ${charId}`);
-      //   let newChars = [...chars];
+      let newChars = [...chars];
       let i = chars.findIndex((elem) => elem.charId === charId);
-      console.log(`Users: ${chars[0]}`);
-      console.log(`User that left: ${JSON.stringify(chars[i], null, 4)}`);
+      console.log(`User that is leaving: ${JSON.stringify(chars[i], null, 4)}`);
+      newChars.splice(i, 1);
+      setChars(newChars);
+      console.log(`Users: ${chars}`);
     });
-  }, []);
+  }, [chars]);
 
   console.log(sessionOpen);
   if (!session) {
