@@ -47,6 +47,8 @@ function Profile() {
 });
   } catch (e){
     alert("Error: could not upload your image please try again")
+    setLoading(false)
+
   }
 
   }
