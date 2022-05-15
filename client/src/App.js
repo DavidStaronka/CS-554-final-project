@@ -10,6 +10,7 @@ import SessionList from "../src/components/SessionList";
 import { AuthProvider } from './firebase/Auth';
 import Login from "../src/components/Login"
 import Session from "../src/components/Session";
+import NotFound from "../src/components/NotFound";
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             <Route exact path="/character/:id" element={<CharacterSheet />} />
             <Route exact path="/sessions" element={<SessionList />} />
             <Route exact path="/session/:id" element={<Session />} />
+            <Route exact path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>

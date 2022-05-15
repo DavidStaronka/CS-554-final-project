@@ -62,7 +62,7 @@ function SignUp() {
       setSigningUp(true);
       // addtoMongo()
     } catch (error) {
-      alert(`Could not create account for email ${email.value}, please enter a valid email`);
+      alert(`Could not create account for email ${email.value}, please enter a valid email or password`);
     }
   };
 
