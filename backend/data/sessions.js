@@ -133,14 +133,13 @@ async function sessionExists(sessionName) {
   return true;
 }
 
-async function getSessionFromBackend(sessionId) {
+async function getSessionFromBackend(sessionName) {
     if (!sessionId) throw "Must provide a session id";
     if (typeof sessionId !== "string") throw "Session id must be a string";
 
     const sessionCollection = await sessions();
-    const session = await sessionCollection.findOne({ _id: ObjectId(sessionId) });
+    const session = await sessionCollection.findOne({ sessionName: sessionName });
 
-    if (!session) throw "Session not found";
     return session;
 }
 
@@ -151,4 +150,5 @@ module.exports = {
   deleteSession,
   addCharacterToSession,
   sessionExists,
+  getSessionFromBackend
 };

@@ -12,8 +12,8 @@ module.exports = {
       throw "Must provice a valid session name";
     if (!body.userId || typeof body.userId !== "string") throw "Invalid userId";
 
-    const sessionVal = await sessionData.sessionExists(body.session);
-    if (!sessionExists) throw "Session does not exist";
+    const sessionVal = await sessionData.getSessionFromBackend(body.session);
+    if (!sessionVal) throw "Session does not exist";
     // if (await this.userExists(firebaseuid)) throw "user already in use";
 
     const { name, session, userId } = body;
