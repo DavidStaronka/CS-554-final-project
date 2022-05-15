@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-// import { auth } from "./Firebase";
 
 export const AuthContext = React.createContext();
 
@@ -19,7 +18,6 @@ export const AuthProvider = ({ children }) => {
         setLoadingUser(false);
       }
     });
-    // console.log(currentUser);
   }, [currentUser]);
 
   if (loadingUser) {

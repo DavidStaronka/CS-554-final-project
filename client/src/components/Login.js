@@ -26,7 +26,7 @@ function Login() {
       alert("If your email is registered, a password reset email was sent");
     } else {
       alert(
-        "Please enter the email address you are trying to reset the password for before you click the forgot password link"
+        "Please enter the email address you are trying to reset the password and then click the forgot password link"
       );
     }
   };
