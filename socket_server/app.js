@@ -6,20 +6,34 @@ rooms = {};
 io.on('connection', (socket) => {
     console.log('new client connected', socket.id);
 
-    socket.on('user_join', (charId, sessionId) => {
-        socket.join(room);
-        if(!rooms[sessionId]){
-            rooms[sessionId] = [];
+    socket.on('DM_join', (sessionId) => {
+        console.log('DM_join', sessionId);
+        socket.join(sessionId);
+        if (!rooms[sessionId]) {
+            rooms[sessionId] = {
+                users: [],
+                DMID: socket.id
+            };
         }
-        rooms[sessionId].push({
+    });
+
+    socket.on('user_join', (charId, charName, sessionId, health) => {
+        console.log("char joined", charId, charName, sessionId, health);
+        if(!rooms[sessionId]){
+            io.to(socket.id).emit('Room_closed');
+            return;
+        }
+        rooms[sessionId].users.push({
             id: socket.id,
             charId: charId
         });
-        io.to(room).emit('user_join', charId);
+        socket.join(sessionId);
+        io.to(rooms[sessionId].DMID).emit('user_join', {charId: charId, charName:charName, health: health});
     });
 
     socket.on('healthChange', (val, sessionId, charId) => {
-        for (user of rooms[sessionId]){
+        console.log("healthChange", sessionId, charId, val);
+        for (user of rooms[sessionId].users){
             if(user.charId === charId){
                 io.to(user.id).emit('healthChange', val);
             }
@@ -28,7 +42,10 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', (sessionId) => {
         console.log('Disconnect Fired');
-        for(user of rooms[sessionId]) {
+        if(!rooms[sessionId]){
+            return;
+        }
+        for(user of rooms[sessionId].users) {
             if (user.id === socket.id) {
                 console.log(user.name, socket.id);
                 io.to(user.room).emit('user_left', user.name);

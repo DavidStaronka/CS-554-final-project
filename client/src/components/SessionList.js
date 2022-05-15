@@ -39,7 +39,7 @@ function SessionList() {
         <br />
         <br />
         {data.map((session) => (
-          <div>
+          <div key={`${session._id}`}>
             <Link to={`/session/${session._id}`} title={session.sessionName}>
               {session.sessionName}
             </Link>

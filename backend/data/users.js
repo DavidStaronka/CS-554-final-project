@@ -29,6 +29,8 @@ module.exports = {
   },
 
   async userExists(userID) {
+    //   console.log(!userID)
+    //   console.log(typeof userID !== "string")
     if (!userID || typeof userID !== "string") throw "Must provide a valid userID";
 
     const userCollection = await users();

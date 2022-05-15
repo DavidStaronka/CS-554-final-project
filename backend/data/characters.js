@@ -1,6 +1,8 @@
 const { ObjectId } = require("mongodb");
 const collections = require("../config/mongoCollections");
 const characters = collections.characters;
+const sessionData = require("./sessions");
+
 
 module.exports = {
   async createCharacter(body) {
@@ -10,13 +12,15 @@ module.exports = {
       throw "Must provice a valid session name";
     if (!body.userId || typeof body.userId !== "string") throw "Invalid userId";
 
+    const sessionVal = await sessionData.sessionExists(body.session);
+    if (!sessionExists) throw "Session does not exist";
     // if (await this.userExists(firebaseuid)) throw "user already in use";
 
     const { name, session, userId } = body;
     const characterCollection = await characters();
     let newCharacter = {
       profileId: userId,
-      dmId: "we need to figure this out",
+      dmId: sessionVal.profileId,
       sessionId: session,
       inspiration: 0,
       name: name,

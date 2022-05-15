@@ -1,4 +1,5 @@
 import { Col, Row, FormControl } from "react-bootstrap";
+import { useEffect } from "react";
 
 function Stats(props) {
   const [char, setChar] = props.char;
@@ -22,12 +23,28 @@ function Stats(props) {
   const handleHitPointsChange = (stat, val) => {
     const updatedChar = { ...char };
     updatedChar.hitPoints[stat] = val;
-    if (stat === "current") {
-      socketRef.current.emit("healthChange", val, char.sessionId, char.id);
-    }
+    // if (stat === "current") {
+    //   socketRef.current.emit("healthChange", val, char.sessionId, char.id);
+    // }
     setChar(updatedChar);
     setSaved(false);
   };
+
+  function handleHealthChange(health) {
+    const updatedChar = { ...char };
+    console.log(char)
+    console.log(updatedChar);
+    updatedChar.hitPoints.current = health;
+    setChar(updatedChar);
+    setSaved(false);
+  };
+
+  // Lets DM change player health
+  useEffect(() => {
+    socketRef.current.on("healthChange", (newCurrentHealth) => {
+      handleHealthChange(newCurrentHealth);
+    });
+  }, [char]);
 
   return (
     <div>

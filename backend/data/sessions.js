@@ -36,6 +36,7 @@ async function getSession(sessionId, dungeonMasterId) {
   if (!sessionId) throw "Must provide a session id";
   if (typeof sessionId !== "string") throw "Session name must be a string";
 
+//   console.log("jdjdjdjd: " + dungeonMasterId)
   const existsDM = await userData.userExists(dungeonMasterId);
   if (!existsDM) throw "Must be a dungeon master";
 
@@ -130,6 +131,17 @@ async function sessionExists(sessionName) {
     return false;
   }
   return true;
+}
+
+async function getSessionFromBackend(sessionId) {
+    if (!sessionId) throw "Must provide a session id";
+    if (typeof sessionId !== "string") throw "Session id must be a string";
+
+    const sessionCollection = await sessions();
+    const session = await sessionCollection.findOne({ _id: ObjectId(sessionId) });
+
+    if (!session) throw "Session not found";
+    return session;
 }
 
 module.exports = {
