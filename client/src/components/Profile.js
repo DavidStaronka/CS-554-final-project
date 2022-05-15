@@ -43,7 +43,7 @@ function Profile() {
     setPhotoURL(data.Location)
     await updateProfile(currentUser, {photoURL : data.Location});
     setLoading(false)
-    window.location.reload()
+    // window.location.reload()
 });
   } catch (e){
     alert("Error: could not upload your image please try again")
@@ -56,7 +56,8 @@ function Profile() {
   useEffect(() => {
     console.log(currentUser)
     console.log(photoURL)
-  }, [photoURL, currentUser])
+    console.log(loading)
+  }, [photoURL, currentUser, loading])
 
   if (!currentUser){
     return <p> Please login to view your profile</p>
