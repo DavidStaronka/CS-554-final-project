@@ -1,6 +1,7 @@
 import { AuthContext } from "../firebase/Auth";
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
+const xss = require('xss');
 
 const axios = require("axios");
 function CharacterForm(props) {
@@ -14,7 +15,8 @@ function CharacterForm(props) {
     e.preventDefault();
 
     const { name, session } = e.target.elements;
-
+    xss(name.value)
+    xss(session.value)
     if (!name.value.trim()) {
       alert("Character Name must be provided");
       return;

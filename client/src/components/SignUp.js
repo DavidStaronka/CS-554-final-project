@@ -4,6 +4,7 @@ import { callCreateUserWithEmailAndPassword } from "../firebase/FirebaseFunction
 import { callSignOut } from "../firebase/FirebaseFunctions";
 import { AuthContext } from "../firebase/Auth";
 import axios from "axios";
+const xss = require('xss');
 
 const addtoMongo = async (firebase, email) => {
   try {
@@ -50,7 +51,7 @@ function SignUp() {
     e.preventDefault();
     // document.getElementById("pwerror").hidden = true
     const { email, passwordOne, passwordTwo } = e.target.elements;
-    if (passwordOne.value !== passwordTwo.value) {
+    if (xss(passwordOne.value) !== xss(passwordTwo.value)) {
       setPwMatch("Passwords do not match");
       // document.getElementById("pwerror").hidden = false
       return false;
@@ -59,12 +60,12 @@ function SignUp() {
     }
 
     try {
-      let seethis = await callCreateUserWithEmailAndPassword(email.value, passwordOne.value);
+      let seethis = await callCreateUserWithEmailAndPassword(xss(email.value), xss(passwordOne.value));
       console.log(seethis);
       setSigningUp(true);
       // addtoMongo()
     } catch (error) {
-      alert(`Could not create account for email ${email.value}, please enter a valid email or password`);
+      alert(`Could not create account for email ${xss(email.value)}, please enter a valid email or password`);
     }
   };
 

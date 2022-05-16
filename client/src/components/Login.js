@@ -4,6 +4,8 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../firebase/Auth";
 // import { callSignInWithEmailAndPassword, callPasswordReset } from "../firebase/FirebaseFunctions";
 import { callSignInWithEmailAndPassword} from "../firebase/FirebaseFunctions";
+const xss = require('xss');
+
 
 function Login() {
   const { currentUser } = useContext(AuthContext);
@@ -13,7 +15,7 @@ function Login() {
     // console.log(event.target.elements);
 
     try {
-      await callSignInWithEmailAndPassword(email.value, password.value);
+      await callSignInWithEmailAndPassword(xss(email.value), xss(password.value));
     } catch (error) {
       alert("Invalid Login Credentials");
     }
