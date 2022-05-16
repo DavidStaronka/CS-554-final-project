@@ -5,6 +5,7 @@ function Stats(props) {
   const [char, setChar] = props.char;
   const setSaved = props.saved[1];
   const socketRef = props.socketRef;
+  const locked = props.lockdown;
 
   const handleStatChange = (stat, val) => {
     const updatedChar = { ...char };
@@ -38,6 +39,56 @@ function Stats(props) {
     setChar(updatedChar);
     setSaved(false);
   };
+
+  const healthDisplay = () => {
+    if (!locked) {
+        return (
+            <Col className="border-danger m-1 col-3">
+                <h6>Health Points</h6>
+                <form className="d-flex justify-content-center">
+                    <strong>Current:</strong>
+                    <FormControl
+                        type="number"
+                        value={char.hitPoints.current}
+                        onChange={(e) => handleHitPointsChange("current", e.target.value)}
+                        className="w-50 mx-auto"
+                    />
+                        <br />
+                        &ensp;
+                        <strong>Max:</strong>
+                    <FormControl
+                        type="number"
+                        value={char.hitPoints.max}
+                        onChange={(e) => handleHitPointsChange("max", e.target.value)}
+                        className="w-50 mx-auto"
+                    />
+                </form>
+            </Col>
+        );
+    } else {
+        return (
+            <Col className="border-danger m-1 col-3">
+                <h6>Health Points</h6>
+                <form className="d-flex justify-content-center">
+                    <strong>Current:</strong>
+                    <FormControl
+                        type="number"
+                        value={char.hitPoints.current}
+                        className="w-50 mx-auto"
+                    />
+                        <br />
+                        &ensp;
+                        <strong>Max:</strong>
+                    <FormControl
+                        type="number"
+                        value={char.hitPoints.max}
+                        className="w-50 mx-auto"
+                    />
+                </form>
+            </Col>
+        );
+    }
+};
 
   // Lets DM change player health
   useEffect(() => {
@@ -167,27 +218,8 @@ function Stats(props) {
             className="w-50 mx-auto"
           />
         </Col>
-        <Col className="border-danger m-1 col-3">
-          <h6>Health Points</h6>
-          <form className="d-flex justify-content-center">
-            <strong>Current:</strong>
-            <FormControl
-              type="number"
-              value={char.hitPoints.current}
-              onChange={(e) => handleHitPointsChange("current", e.target.value)}
-              className="w-50 mx-auto"
-            />
-            <br />
-            &ensp;
-            <strong>Max:</strong>
-            <FormControl
-              type="number"
-              value={char.hitPoints.max}
-              onChange={(e) => handleHitPointsChange("max", e.target.value)}
-              className="w-50 mx-auto"
-            />
-          </form>
-        </Col>
+        {healthDisplay()}
+        
       </Row>
     </div>
   );

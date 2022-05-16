@@ -45,6 +45,13 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("longRest", (sessionId) => {
+        console.log("longRest", sessionId);
+        for (user of rooms[sessionId].users) {
+            io.to(user.id).emit("longRest");
+        }
+    });
+
   socket.on("disconnect", (sessionId) => {
     console.log("Disconnect Fired");
     console.log(sessionId);
@@ -56,9 +63,9 @@ io.on("connection", (socket) => {
         console.log(user.name, socket.id);
         io.to(rooms[sessionId].DMID).emit("user_left", user.name);
         rooms[sessionId].splice(rooms[sessionId].indexOf(user), 1);
-        if (rooms[sessionId].length === 0) {
-          delete rooms[sessionId];
-        }
+        // if (rooms[sessionId].length === 0) {
+        //   delete rooms[sessionId];
+        // }
       }
     }
   });
@@ -76,9 +83,9 @@ io.on("connection", (socket) => {
       if (user.id === socket.id) {
         console.log(user.name, socket.id);
         rooms[sessionId].users.splice(rooms[sessionId].users.indexOf(user), 1);
-        if (rooms[sessionId].users.length === 0) {
-          // delete rooms[sessionId];
-        }
+        // if (rooms[sessionId].users.length === 0) {
+        //   delete rooms[sessionId];
+        // }
       }
     }
   });
