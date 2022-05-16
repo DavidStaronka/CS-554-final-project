@@ -1,6 +1,7 @@
 import { AuthContext } from "../firebase/Auth";
 import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
+const xss = require('xss');
 
 const axios = require("axios");
 function SessionForm(props) {
@@ -14,7 +15,7 @@ function SessionForm(props) {
     e.preventDefault();
 
     const { session } = e.target.elements;
-
+    xss(session.value)
     if (!session.value.trim()) {
       alert("Session Name must be provided");
       return;

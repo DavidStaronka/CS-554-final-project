@@ -45,11 +45,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("longRest", (sessionId) => {
-        console.log("longRest", sessionId);
-        for (user of rooms[sessionId].users) {
-            io.to(user.id).emit("longRest");
-        }
+  socket.on("room_close", (sessionId) => {
+        console.log("room_close", sessionId);
+        delete rooms[sessionId];
     });
 
   socket.on("disconnect", (sessionId) => {

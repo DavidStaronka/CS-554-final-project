@@ -99,9 +99,10 @@ function CharacterSheet() {
   useEffect(() => {
     socketRef.current = io("/");
     return () => {
+      leaveSession();
       socketRef.current.disconnect();
     };
-  }, []);
+  }, [char]);
 
   // get char from db
   useEffect(() => {
@@ -152,6 +153,7 @@ function CharacterSheet() {
   }
 
   function leaveSession() {
+    console.log(`seesionId ${char.sessionId}`);
     socketRef.current.emit("user_left", char.sessionId, id);
     setConnected(false);
   }
@@ -209,7 +211,7 @@ function CharacterSheet() {
 
   const longRestButton = () => {
     if (connected) {
-        return;
+      return;
     }
     return (
       <Button className="btn btn-lg btn-primary mx-5" onClick={handleLongRest}>
@@ -241,7 +243,12 @@ function CharacterSheet() {
           {char.sessionId}
         </h3>
         <Titles char={[char, setChar]} saved={[saved, setSaved]} />
-        <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} lockdown={connected}/>
+        <Stats
+          char={[char, setChar]}
+          saved={[saved, setSaved]}
+          socketRef={socketRef}
+          lockdown={connected}
+        />
         <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
         <Row>
           <Weapons char={[char, setChar]} saved={[saved, setSaved]}></Weapons>
