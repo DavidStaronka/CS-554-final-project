@@ -42,7 +42,7 @@ function Titles(props) {
   return (
     <div>
       <div className="d-flex justify-content-between">
-        <h3>
+        <h4>
           Race:
           <FormControl
             type="text"
@@ -50,9 +50,9 @@ function Titles(props) {
             onChange={(e) => handleCharChange("race", e.target.value)}
             className="w-50 mx-auto"
           />
-        </h3>
+        </h4>
 
-        <h3>
+        <h4>
           Class:
           <FormControl
             type="text"
@@ -60,9 +60,9 @@ function Titles(props) {
             onChange={(e) => handleCharChange("class", e.target.value)}
             className="w-50 mx-auto"
           />
-        </h3>
+        </h4>
 
-        <h3>
+        <h4>
           Level:
           <FormControl
             type="number"
@@ -70,11 +70,11 @@ function Titles(props) {
             onChange={(e) => handleCharChange("level", e.target.value)}
             className="w-50 mx-auto"
           />
-        </h3>
+        </h4>
       </div>
       <div className="d-flex justify-content-between">
-        <h1>{char.name}</h1>
-        <h3>
+        <h4>{char.name}</h4>
+        <h4>
           Alignment:
           <FormControl
             type="text"
@@ -82,8 +82,8 @@ function Titles(props) {
             onChange={(e) => handleCharChange("alignment", e.target.value)}
             className="w-75 mx-auto"
           />
-        </h3>
-        <h3>
+        </h4>
+        <h4>
           Background:
           <FormControl
             type="text"
@@ -91,8 +91,8 @@ function Titles(props) {
             onChange={(e) => handleCharChange("background", e.target.value)}
             className="w-75 mx-auto"
           />
-        </h3>
-        <h3>
+        </h4>
+        <h4>
           Inspiration
           <FormControl
             type="number"
@@ -100,7 +100,7 @@ function Titles(props) {
             onChange={(e) => handleCharChange("inspiration", e.target.value)}
             className="w-50 mx-auto"
           />
-        </h3>
+        </h4>
       </div>
       <div className="d-flex mx-3">
         {characterDescription()}
