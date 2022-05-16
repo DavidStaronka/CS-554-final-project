@@ -43,7 +43,7 @@ module.exports = {
     if (!userID || typeof userID !== "string") throw "Must provice a valid userID";
 
     const userCollection = await users();
-    const user = await userCollection.findOne({ userID: userID });
+    const user = await userCollection.findOne({ _id: userID });
     if (user === null) return null;
     return user;
   },

@@ -8,6 +8,7 @@ router.post("/", async (req, res) => {
   try {
     let ret;
     //console.log(req.body);
+    console.log(req.body)
     if (await sessionData.sessionExists(req.body.session)) {
       const newCharacter = await characterData.createCharacter(req.body);
       console.log(`CHARACTER ${newCharacter.toString()}`);
