@@ -208,6 +208,9 @@ function CharacterSheet() {
   };
 
   const longRestButton = () => {
+    if (connected) {
+        return;
+    }
     return (
       <Button className="btn btn-lg btn-primary mx-5" onClick={handleLongRest}>
         Long Rest
@@ -238,7 +241,7 @@ function CharacterSheet() {
           {char.sessionId}
         </h3>
         <Titles char={[char, setChar]} saved={[saved, setSaved]} />
-        <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} />
+        <Stats char={[char, setChar]} saved={[saved, setSaved]} socketRef={socketRef} lockdown={connected}/>
         <Proficiencies char={[char, setChar]} saved={[saved, setSaved]} />
         <Row>
           <Weapons char={[char, setChar]} saved={[saved, setSaved]}></Weapons>
