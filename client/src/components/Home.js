@@ -9,7 +9,7 @@ function Home() {
     <Container>
       <Card >
         <Card.Body>
-          <Card.Text as='h5'>This website allows you to keep track of your DnD characters</Card.Text>
+          <Card.Text as='h2'>This website allows you to keep track of your DnD characters</Card.Text>
         </Card.Body>
       </Card>
       <SignUp/>

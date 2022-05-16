@@ -87,11 +87,11 @@ function Session(props) {
   return (
     <div>
       <h1>{session.sessionName}</h1>
-        <Button onClick={room_close}>Close Session</Button>
+      <Button onClick={room_close}>Close Session</Button>
       <div>
         {chars.map((char) => (
           <div key={`${char.charId}`}>
-            <h3>{char.charName}</h3>
+            <h2>{char.charName}</h2>
             <h3>{`Max Health: ${char.max_health}`}</h3>
             <form
               onSubmit={(e) => {
@@ -100,7 +100,8 @@ function Session(props) {
                 healthChange(e.target.health.value, char.charId);
               }}
             >
-              <input type="number" name="health" defaultValue={char.health} />
+              <label for="healthNum"></label>
+              <input id="healthNum" type="number" name="health" defaultValue={char.health} />
               <Button type="submit">Change Health</Button>
             </form>
           </div>

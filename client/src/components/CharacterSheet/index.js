@@ -238,7 +238,7 @@ function CharacterSheet() {
         {connectionButton()}
       </div>
       <Container className="border border-3 border-secondary mx-auto p-3">
-        <h4>Session ID:</h4>
+        <h2>Session ID:</h2>
         <h3 className="w-50 mx-auto" type="text">
           {char.sessionId}
         </h3>

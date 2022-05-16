@@ -96,7 +96,7 @@ function SignUp() {
 
   return (
     <div>
-      <h1>Sign up</h1>
+      <h3>Sign up</h3>
       {errorMess}
       <form onSubmit={handleSignUp}>
         <div className="form-group">
