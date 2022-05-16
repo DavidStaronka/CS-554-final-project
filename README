@@ -16,8 +16,7 @@ To run the client:
     npm i
     npm start
 
-Navigate to http://localhost:3000 to open the website
-Either use the seeded example user with:
+Navigate to http://localhost:3000 to open the website and either use the seeded example user with:
     email: test@test.com
     pass: Stevens1870
 or create your own
