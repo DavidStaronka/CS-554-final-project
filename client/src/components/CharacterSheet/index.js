@@ -99,10 +99,10 @@ function CharacterSheet() {
   useEffect(() => {
     socketRef.current = io("/");
     return () => {
-      leaveSession();
+      //leaveSession();
       socketRef.current.disconnect();
     };
-  }, [char]);
+  }, []);
 
   // get char from db
   useEffect(() => {
