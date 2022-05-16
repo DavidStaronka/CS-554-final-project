@@ -1,6 +1,6 @@
 import { AuthContext } from "../firebase/Auth";
 import React, { useContext, useEffect, useState } from "react";
-import CharacterForm from "./CharacterForm";
+// import CharacterForm from "./CharacterForm";
 import { Link } from "react-router-dom";
 import SessionForm from "./SessionForm";
 const axios = require("axios");

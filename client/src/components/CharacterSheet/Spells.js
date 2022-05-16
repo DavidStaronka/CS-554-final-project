@@ -1,5 +1,5 @@
 import { Col, Table, FormControl, Button } from "react-bootstrap";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 function Spells(props) {
   const [char, setChar] = props.char;

@@ -75,7 +75,7 @@ function SignUp() {
       </h4>
     );
   } else {
-    errorMess = <h4></h4>;
+    errorMess = <></>;
   }
 
   if (currentUser) {

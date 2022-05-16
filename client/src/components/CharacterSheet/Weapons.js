@@ -1,4 +1,4 @@
-import { Row, Col, FormControl, Table, Button } from "react-bootstrap";
+import { Col, FormControl, Table, Button } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 
 function Weapons(props) {
@@ -7,12 +7,12 @@ function Weapons(props) {
   const setSaved = props.saved[1];
   let weaponList = [];
 
-  const handleCharChange = (stat, val) => {
-    const updatedChar = { ...char };
-    updatedChar[stat] = val;
-    setChar(updatedChar);
-    setSaved(false);
-  };
+  // const handleCharChange = (stat, val) => {
+  //   const updatedChar = { ...char };
+  //   updatedChar[stat] = val;
+  //   setChar(updatedChar);
+  //   setSaved(false);
+  // };
 
   const handleWeaponChange = (weapon, sub, val) => {
     const updatedChar = { ...char };
@@ -47,32 +47,32 @@ function Weapons(props) {
     setSaved(false);
   };
 
-  const mapWeapon = (weapon) => {
-    return (
-      <tr key={uuidv4()}>
-        <td>
-          <FormControl
-            type="text"
-            value={weapon.name}
-            onChange={(e) => handleWeaponChange(weapon, "name", e.target.value)}
-            className="mx-auto"
-          />
-        </td>
-        <td>
-          <FormControl
-            as="textarea"
-            type="text"
-            value={weapon.description}
-            onChange={(e) => handleWeaponChange(weapon, "description", e.target.value)}
-            className="mx-auto"
-          />
-        </td>
-        <td>
-          <Button onClick={(e) => handleWeaponDelete(weapon)}>Delete</Button>
-        </td>
-      </tr>
-    );
-  };
+  // const mapWeapon = (weapon) => {
+  //   return (
+  //     <tr key={uuidv4()}>
+  //       <td>
+  //         <FormControl
+  //           type="text"
+  //           value={weapon.name}
+  //           onChange={(e) => handleWeaponChange(weapon, "name", e.target.value)}
+  //           className="mx-auto"
+  //         />
+  //       </td>
+  //       <td>
+  //         <FormControl
+  //           as="textarea"
+  //           type="text"
+  //           value={weapon.description}
+  //           onChange={(e) => handleWeaponChange(weapon, "description", e.target.value)}
+  //           className="mx-auto"
+  //         />
+  //       </td>
+  //       <td>
+  //         <Button onClick={(e) => handleWeaponDelete(weapon)}>Delete</Button>
+  //       </td>
+  //     </tr>
+  //   );
+  // };
 
   const makeForms = (weaponNum) => {
     for(let i=0;i<weaponNum;i++){

@@ -95,7 +95,7 @@ function Stats(props) {
     socketRef.current.on("healthChange", (newCurrentHealth) => {
       handleHealthChange(newCurrentHealth);
     });
-  }, [char]);
+  }, [char, socketRef]);
 
   return (
     <div>

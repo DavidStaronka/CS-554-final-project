@@ -1,4 +1,4 @@
-import { Container, Row, FormControl, Button } from "react-bootstrap";
+import { Container, Row, Button } from "react-bootstrap";
 import { useState, useRef, useEffect, useContext } from "react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
@@ -16,74 +16,74 @@ import { useParams } from "react-router-dom";
 
 const axios = require("axios");
 
-const placeholder = {
-  id: "1",
-  profileId: "sdfgdsa",
-  dmId: "jdhkfdsjdkl",
-  sessionId: "ajsdfghzdsl",
-  inspiration: 3,
-  name: "Jerry, Slayer of PCs",
-  level: 17,
-  race: "Kobold",
-  class: "Cleric",
-  alignment: "Lawful Good",
-  background: "Acolyte",
-  description:
-    "Jerry was born as a pup, he was found by muriel, who lived in the middle of nowhere",
-  inventory: "Map, Torch, a single gold coin",
-  weapons: [
-    {
-      name: "Longsword",
-      damage: "1d8",
-      description: "A long sword",
-    },
-    {
-      name: "Club",
-      damage: "1d8",
-      description: "A club, made of bubbles... Not very effective",
-    },
-  ],
-  spells: [
-    {
-      name: "eldritch blast",
-      description: "Blast your enemies warlock style",
-      level: 0,
-    },
-    {
-      name: "fireball",
-      description: "Mr. Worldwide, Pitbull",
-      level: 1,
-    },
-  ],
-  spellSlots: {
-    current: [2, 1, 0, 0, 0, 0, 0, 0, 0],
-    max: [2, 3, 4, 5, 6, 0, 0, 0, 0],
-  },
-  stats: {
-    strength: 20,
-    dexterity: 21,
-    constitution: 22,
-    intelligence: 19,
-    wisdom: 8,
-    charisma: 17,
-  },
-  speed: 30,
-  armorClass: 20,
-  hitPoints: {
-    current: 30,
-    max: 30,
-  },
-  condition: "poisoned",
-  inpiration: 4,
-  proficiencies: {
-    skill: ["Animal Handling", "Insight"],
-    stat: ["dexterity"],
-    armor: ["Heavy", "Light"],
-    weapon: ["Martial", "Simple"],
-    tool: ["Lockpick"],
-    language: ["Commmon", "Infernal", "English"],
-  },
-};
+// const placeholder = {
+//   id: "1",
+//   profileId: "sdfgdsa",
+//   dmId: "jdhkfdsjdkl",
+//   sessionId: "ajsdfghzdsl",
+//   inspiration: 3,
+//   name: "Jerry, Slayer of PCs",
+//   level: 17,
+//   race: "Kobold",
+//   class: "Cleric",
+//   alignment: "Lawful Good",
+//   background: "Acolyte",
+//   description:
+//     "Jerry was born as a pup, he was found by muriel, who lived in the middle of nowhere",
+//   inventory: "Map, Torch, a single gold coin",
+//   weapons: [
+//     {
+//       name: "Longsword",
+//       damage: "1d8",
+//       description: "A long sword",
+//     },
+//     {
+//       name: "Club",
+//       damage: "1d8",
+//       description: "A club, made of bubbles... Not very effective",
+//     },
+//   ],
+//   spells: [
+//     {
+//       name: "eldritch blast",
+//       description: "Blast your enemies warlock style",
+//       level: 0,
+//     },
+//     {
+//       name: "fireball",
+//       description: "Mr. Worldwide, Pitbull",
+//       level: 1,
+//     },
+//   ],
+//   spellSlots: {
+//     current: [2, 1, 0, 0, 0, 0, 0, 0, 0],
+//     max: [2, 3, 4, 5, 6, 0, 0, 0, 0],
+//   },
+//   stats: {
+//     strength: 20,
+//     dexterity: 21,
+//     constitution: 22,
+//     intelligence: 19,
+//     wisdom: 8,
+//     charisma: 17,
+//   },
+//   speed: 30,
+//   armorClass: 20,
+//   hitPoints: {
+//     current: 30,
+//     max: 30,
+//   },
+//   condition: "poisoned",
+//   inpiration: 4,
+//   proficiencies: {
+//     skill: ["Animal Handling", "Insight"],
+//     stat: ["dexterity"],
+//     armor: ["Heavy", "Light"],
+//     weapon: ["Martial", "Simple"],
+//     tool: ["Lockpick"],
+//     language: ["Commmon", "Infernal", "English"],
+//   },
+// };
 
 function CharacterSheet() {
   const { currentUser } = useContext(AuthContext);
@@ -117,7 +117,7 @@ function CharacterSheet() {
       }
     };
     getData();
-  }, [id]);
+  }, [id, currentUser.uid]);
 
   useEffect(() => {
     socketRef.current.on("Room_closed", () => {
@@ -156,14 +156,14 @@ function CharacterSheet() {
     setConnected(false);
   }
 
-  const handleCharChange = (stat, val) => {
-    const updatedChar = { ...char };
-    updatedChar[stat] = val;
-    setChar(updatedChar);
-    setSaved(false);
-  };
+  // const handleCharChange = (stat, val) => {
+  //   const updatedChar = { ...char };
+  //   updatedChar[stat] = val;
+  //   setChar(updatedChar);
+  //   setSaved(false);
+  // };
   const handleSave = async () => {
-    let response = await axios.put(`http://localhost:5000/character/${id}`, char);
+    await axios.put(`http://localhost:5000/character/${id}`, char);
     setSaved(true);
   };
 

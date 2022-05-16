@@ -23,7 +23,7 @@ function SessionForm(props) {
     //TODO CHECK SESSION EXISTS
     console.log(session.value);
     try {
-      let response = await axios.post(`http://localhost:5000/session`, {
+      await axios.post(`http://localhost:5000/session`, {
         sessionName: session.value,
         userId: currentUser.uid,
       });
