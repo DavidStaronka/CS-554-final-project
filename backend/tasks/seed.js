@@ -10,7 +10,7 @@ const main = async () => {
 
     try {
         // Create User
-        const user1 = await users.create("e62m8hwESFdUvVmo9ZKJ56qBlOp2", "stevens@stevens.com");
+        const user1 = await users.create("afeWxWqnXmaZ1rv1hhNDXOyON6l1", "test@test.com");
 
         // Create Session
         const session1 = await sessions.createSession("Test Session", user1);
