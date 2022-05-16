@@ -67,6 +67,11 @@ function Session(props) {
     });
   }, [chars]);
 
+  const room_close = () => {
+    socketRef.current.emit("room_close", session.sessionName);
+    setSessionOpen(false);
+  };
+
   console.log(sessionOpen);
   if (!session) {
     return <div>Loading...</div>;
@@ -82,6 +87,7 @@ function Session(props) {
   return (
     <div>
       <h1>{session.sessionName}</h1>
+        <Button onClick={room_close}>Close Session</Button>
       <div>
         {chars.map((char) => (
           <div key={`${char.charId}`}>
