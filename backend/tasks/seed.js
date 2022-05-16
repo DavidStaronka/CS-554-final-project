@@ -9,17 +9,14 @@ const main = async () => {
   await db.dropDatabase();
 
     try {
-        // User
+        // Create User
         const user1 = await users.create("e62m8hwESFdUvVmo9ZKJ56qBlOp2", "stevens@stevens.com");
 
-        // Session
-        const session1 = await sessions.createSession("Test Session 100", user1);
+        // Create Session
+        const session1 = await sessions.createSession("Test Session", user1);
 
-        // Character
-        const character1 = await characters.createCharacter({ name: "Test Character", session: session1.session, userId: user1 }); 
-
-        console.log(JSON.stringify(session1));
-        //console.log(character1);
+        // Create Character
+        const character1 = await characters.createCharacter({ name: "Test Character", session: session1.sessionName, userId: user1 });
 ;    } 
     catch (e) {
         console.log(e);
